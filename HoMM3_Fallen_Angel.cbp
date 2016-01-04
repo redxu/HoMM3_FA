@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="HoMM3_Fallen_Angel" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/HoMM3_FA" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add library="user32" />
+					<Add library="libs\liblua.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/HoMM3_FA" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+					<Add library="libs\liblua.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="libs/liblua.a" />
+		</Compiler>
+		<Unit filename="FA_log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_log.h" />
+		<Unit filename="FA_lua.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_lua.h" />
+		<Unit filename="FA_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_mod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_mod.h" />
+		<Unit filename="FA_struct.h" />
+		<Unit filename="H3_function.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="H3_function.h" />
+		<Unit filename="lua/lauxlib.h" />
+		<Unit filename="lua/lua.h" />
+		<Unit filename="lua/luaconf.h" />
+		<Unit filename="lua/lualib.h" />
+		<Unit filename="luabind/FA_LUA_function.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="patch.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="patch.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
