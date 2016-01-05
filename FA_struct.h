@@ -100,6 +100,7 @@ struct H3_Player {
 struct H3_core {
 	BYTE _u1[0xa4];
 	struct H3_Hero heroes[0x9c];
+	BYTE _u2[0x1ea];
 	WORD dayofweek;
 	WORD week;
 	WORD month;

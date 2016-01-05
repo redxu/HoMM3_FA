@@ -6,7 +6,7 @@
 
 #include "../FA_def.h"
 #include "../FA_lua.h"
-#include "../FA_log.h"
+#include "../FA_debug.h"
 #include "../H3_function.h"
 
 /**
@@ -26,7 +26,7 @@ static int _H3_Random(lua_State* L) {
 	int min = luaL_checkinteger(L, 1);
 	int max = luaL_checkinteger(L, 2);
 	if(min > max) {
-		FA_log("_H3_Random min %d max %d wrong!", min, max);
+		FA_Log("_H3_Random min %d max %d wrong!", min, max);
 		lua_pushinteger(L, 0);
 	}
 	else {

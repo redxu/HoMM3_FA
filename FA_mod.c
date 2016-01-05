@@ -1,7 +1,7 @@
 #include "patch.h"
 #include "FA_def.h"
 #include "FA_struct.h"
-#include "FA_log.h"
+#include "FA_debug.h"
 #include "FA_lua.h"
 #include "H3_Function.h"
 #include "FA_mod.h"
@@ -23,14 +23,14 @@ static int FA_STDCALL FA_LoadBar(void) {
 		lua_getglobal(L, "FA_LoadBar");
 		//0 args,1 return
 		if(lua_pcall(L, 0, 1, 0)) {
-			FA_log("lua call FA_LoadBar Failed! [%s]", lua_tostring(L, -1));
+			FA_Log("lua call FA_LoadBar Failed! [%s]", lua_tostring(L, -1));
 		}
 		int ukp = lua_tointeger(L, -1);
 		lua_pop(L, 1);
 		return ukp;
 	}
 	else {
-		FA_log("loading FA_LoadBar.lua Failed! [%s]", lua_tostring(L, -1));
+		FA_Log("loading FA_LoadBar.lua Failed! [%s]", lua_tostring(L, -1));
 	}
 
 	return 0;
@@ -39,14 +39,16 @@ static int FA_STDCALL FA_LoadBar(void) {
 //for test
 static void* FA_FASTCALL TestClick(void* ecx) {
 	int idx = H3_GetPlayerIndex();
-	FA_log("current player=%d",idx);
+	FA_Log("current player=%d",idx);
 	struct H3_Player* player = H3_GetPlayer(idx);
-	FA_log("%p player->curhero=%d tophero=%d", player, player->curhero, player->tophero);
-	FA_log("player->name=%s %p",player->name,player->name);
+	FA_Log("%p player->curhero=%d tophero=%d", player, player->curhero, player->tophero);
+	FA_Log("player->name=%s %p",player->name,player->name);
 	struct H3_Hero* hero = H3_GetHero(player->curhero);
-	FA_log("hero->name=%s", hero->name);
-	FA_log("hero->movement=%d/%d",hero->curmovement,hero->maxmovement);
-	FA_log("hero->adpk = %d %d %d %d",hero->adpk[0], hero->adpk[1], hero->adpk[2], hero->adpk[3]);
+	FA_Log("%p hero->name=%s", hero, hero->name);
+	FA_Log("hero->movement=%d/%d",hero->curmovement,hero->maxmovement);
+	FA_Log("hero->adpk = %d %d %d %d",hero->adpk[0], hero->adpk[1], hero->adpk[2], hero->adpk[3]);
+
+	FA_DumpTxt((DWORD)hero, sizeof(struct H3_Hero));
 
 	typedef void* (FA_FASTCALL* F)(void *);
 	F proxy = (F)0x4de980; 
@@ -77,14 +79,14 @@ BOOL FA_Mod_Init(void) {
 		if(mod->Type == FA_MOD_TYPE_CALL) {
 			DWORD jmpoff = mod->Detour - mod->Orig - 5;
 			patch[0] = 0xe8;
-			memcpy(patch+1,&jmpoff,4);
-			if(!PatchCode((PVOID)mod->Orig,patch,mod->Size)) {
-				FA_log("patch 0x%x Failed!",mod->Orig);
+			memcpy(patch+1, &jmpoff, 4);
+			if(!PatchCode((PVOID)mod->Orig, patch, mod->Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
 				return FALSE;
 			}
 		}
 		else {
-			FA_log("unhandle mod type %d", mod->Type);
+			FA_Log("unhandle mod type %d", mod->Type);
 			return FALSE;
 		}
 	}

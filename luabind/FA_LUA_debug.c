@@ -6,25 +6,25 @@
 
 #include "../FA_def.h"
 #include "../FA_lua.h"
-#include "../FA_log.h"
+#include "../FA_debug.h"
 
 /**
  * Lua Bind FA_log
  */
-static int _FA_log(lua_State* L) {
+static int _FA_Log(lua_State* L) {
 	const char* log = luaL_checkstring(L, 1);
-	FA_log(log);
+	FA_Log(log);
 	return 0;
 }
 
 /**
- * Register Homm3.LOG to LUA
+ * Register Homm3.DEBUG to LUA
  */
-FA_EXPORT int luaopen_Homm3_LOG(lua_State* L) {
+FA_EXPORT int luaopen_Homm3_DEBUG(lua_State* L) {
 	luaL_checkversion(L);
 
 	luaL_Reg l[] = {
-		{"Log", _FA_log},
+		{"Log", _FA_Log},
 		{NULL, NULL},
 	};
 

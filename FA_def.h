@@ -2,6 +2,7 @@
 #define __FA_DEF__H__
 
 #include <stdint.h>
+#include <windef.h>
 
 #ifndef BYTE
 #define BYTE unsigned char
