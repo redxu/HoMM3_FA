@@ -1,5 +1,4 @@
 -- LoadBar
-package.cpath = "HoMM3_FA.dll"
 local H3 = require "Homm3.API"
 
 

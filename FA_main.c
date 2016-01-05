@@ -12,8 +12,8 @@ static void FA_Mod(void){
 	FA_lua_init();
 	//hack mod
 	FA_Mod_Init();
-    //detour mod
-    FA_Detour_Init();
+	//detour mod 
+	FA_Detour_Init();
 }
 
 static void FA_UnMod(void) {

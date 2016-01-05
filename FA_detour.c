@@ -1,6 +1,9 @@
 #include <windows.h>
 #include "FA_def.h"
 #include "FA_log.h"
+#include "FA_struct.h"
+#include "FA_lua.h"
+#include "H3_function.h"
 #include "detour/hookapi.h"
 #include "FA_detour.h"
 
@@ -19,11 +22,24 @@ static DWORD _FA_Detour_GetProxy(DWORD detour);
  * @return     [description]
  */
 static void* FA_FASTCALL FA_DoGlobalEvents(void* ecx) {
-	FA_log("new day begin!");
 	typedef void* (FA_FASTCALL *F)(void *);
 	F proxy = (F)_FA_Detour_GetProxy((DWORD)FA_DoGlobalEvents);
 	//assert(proxy != 0);
-	return proxy(ecx);
+	void* rtv = proxy(ecx);
+
+	//call script
+	if(!luaL_dofile(L, "./script/FA_DoGlobalEvents.lua")) {
+		lua_getglobal(L, "FA_DoGlobalEvents");
+		//0 args,0 return
+		if(lua_pcall(L, 0, 0, 0)) {
+			FA_log("lua call FA_DoGlobalEvents Failed! [%s]", lua_tostring(L, -1));
+		}
+	}
+	else {
+		FA_log("loading FA_DoGlobalEvents.lua Failed! [%s]", lua_tostring(L, -1));
+	}
+
+	return rtv;
 }
 
 

@@ -69,7 +69,7 @@ struct H3_Hero {
 };
 
 /**
- * 玩家结构 360bytes
+ * 玩家结构 0x168
  */
 struct H3_Player {
 	char playeridx;			//[0~7]
@@ -87,9 +87,22 @@ struct H3_Player {
 	BYTE _u3[4];
 	int tophero;
 	BYTE _u4[0x54];
-	char name[0x5c];		//name.
-	//E1.. E2 IsAI.
+	char name[21];			//name.
+	BYTE activeflag;		//+E1 1 active 0 sleep
+	BYTE playerflag;		//+E2 1 player 0 computer
+	BYTE _u5[0x45];
 	double resimp[8];		//unknow
+};
+
+/**
+ * H3 core struct 0x4e7cc
+ */
+struct H3_core {
+	BYTE _u1[0xa4];
+	struct H3_Hero heroes[0x9c];
+	WORD dayofweek;
+	WORD week;
+	WORD month;
 };
 
 #pragma pack(pop)

@@ -50,6 +50,15 @@ static int _H3_MessageBox(lua_State *L) {
 }
 
 /**
+ * Lua Bind H3_GetPlayerIndex
+ */
+static int _H3_GetPlayerIndex(lua_State *L) {
+	int idx = H3_GetPlayerIndex();
+	lua_pushinteger(L, idx);
+	return 1;
+}
+
+/**
  * Register Homm3.API to LUA
  */
 FA_EXPORT int luaopen_Homm3_API(lua_State* L) {
@@ -59,6 +68,7 @@ FA_EXPORT int luaopen_Homm3_API(lua_State* L) {
 		{"BlitPcx16", _H3_BlitPcx16},
 		{"MessageBox", _H3_MessageBox},
 		{"Random", _H3_Random},
+		{"GetPlayerIndex", _H3_GetPlayerIndex},
 		{NULL, NULL},
 	};
 

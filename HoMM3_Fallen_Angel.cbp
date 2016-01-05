@@ -45,6 +45,10 @@
 		<Compiler>
 			<Add option="libs/liblua.a" />
 		</Compiler>
+		<Unit filename="FA_detour.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_detour.h" />
 		<Unit filename="FA_log.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -65,6 +69,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="H3_function.h" />
+		<Unit filename="detour/hookapi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="detour/hookapi.h" />
+		<Unit filename="detour/ldasm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="detour/ldasm.h" />
 		<Unit filename="lua/lauxlib.h" />
 		<Unit filename="lua/lua.h" />
 		<Unit filename="lua/luaconf.h" />
