@@ -22,11 +22,13 @@ int FA_FASTCALL H3_Random(int min, int max);
 /**
  * 信息提示框
  * @param  msg      [信息提示]
- * @param  mtype    [类型 1,OK]
+ * @param  mtype    [类型 1,YES 2,YES_NO]
+ * @param  type1    [图标类型 -1不显示 0x14技能图标]
+ * @param  stype1   [图标ID]
  * @param  showtime [显示时间 0永久显示]
- * @return          [description]
+ * @return          [FA_MESSAGEBOX_YES/NO]
  */
-int FA_FASTCALL H3_MessageBox(const char* msg, int mtype, int showtime);
+int FA_FASTCALL H3_MessageBox(const char* msg, int mtype, int type1, int stype1, int showtime);
 
 /**
  * [获取当前玩家序号]
@@ -47,6 +49,15 @@ struct H3_Player* H3_GetPlayer(int index);
  * @return        [H3_Hero]
  */
 struct H3_Hero* H3_GetHero(int heroid);
+
+/**
+ * [英雄学习技能]
+ * @param  hero  [英雄地址]
+ * @param  skill [技能索引]
+ * @param  add   [1添加]
+ * @return       [1成功 0失败]
+ */
+int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, BYTE add);
 
 /*****	MEMORY	****/
 void* __cdecl H3_Malloc(int size);

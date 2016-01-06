@@ -43,7 +43,7 @@ struct H3_Hero {
 	int creaturetype[7];	//creature type (FFFFFFFF is empty)
 	int creaturecount[7];	//off
 	BYTE skilllv[28];		//skill level [0~3]
-	BYTE skilltree[28];		//skill tree 
+	BYTE skilltree[28];		//skill tree  [0~10 show order]
 	DWORD skillcount;		//0ffx102
 	BYTE _un4[17];
 	char morale;

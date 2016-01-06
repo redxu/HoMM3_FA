@@ -30,17 +30,19 @@ int FA_FASTCALL H3_Random(int min, int max) {
 /**
  * 信息提示框
  * @param  msg      [信息提示]
- * @param  mtype    [类型 1,OK]
+ * @param  mtype    [类型 1,YES 2,YES_NO]
+ * @param  type1    [图标类型 -1不显示 0x14技能图标]
+ * @param  stype1   [图标ID 默认0]
  * @param  showtime [显示时间 0永久显示]
- * @return          [description]
+ * @return          [FA_MESSAGEBOX_YES/NO]
  */
-int FA_FASTCALL H3_MessageBox(const char* msg, int mtype, int showtime) {
+int FA_FASTCALL H3_MessageBox(const char* msg, int mtype, int type1, int stype1, int showtime) {
 	int rtv;
 	typedef int (FA_FASTCALL *F)(const char* msg, int mtype, int xpos, int ypos, 
 							int type1, int stype1, int type2, int stype2,
 							int par, int showtime, int type3, int stype3);
 	F proxy = (F)0x4f6C00;
-	proxy(msg, mtype, -1, -1, -1, 0, -1, 0, -1, showtime, -1, 0);
+	proxy(msg, mtype, -1, -1, type1, stype1, -1, 0, -1, showtime, -1, 0);
 	DWORD* ptr = (DWORD*)0x6992D0;
 	ptr = (DWORD *)(*ptr+0x38);
 	rtv = *ptr;
@@ -82,6 +84,19 @@ struct H3_Hero* H3_GetHero(int heroid) {
 	DWORD* addr = (DWORD *)FA_ADDR_BASE;
 	hero = (struct H3_Hero *)(*addr + offset);
 	return hero;
+}
+
+/**
+ * [英雄学习技能]
+ * @param  hero  [英雄地址]
+ * @param  skill [技能索引]
+ * @param  add   [1添加]
+ * @return       [1成功 0失败]
+ */
+int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, BYTE add) {
+	typedef int (FA_THISCALL *F)(struct H3_Hero*, int, BYTE);
+	F proxy = (F)0x4e2540;
+	return proxy(hero, skill, add);
 }
 
 /**

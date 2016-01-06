@@ -45,14 +45,18 @@
 		<Compiler>
 			<Add option="libs/liblua.a" />
 		</Compiler>
+		<Unit filename="FA_debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_debug.h" />
 		<Unit filename="FA_detour.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_detour.h" />
-		<Unit filename="FA_log.c">
+		<Unit filename="FA_function.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="FA_log.h" />
+		<Unit filename="FA_function.h" />
 		<Unit filename="FA_lua.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -81,6 +85,9 @@
 		<Unit filename="lua/lua.h" />
 		<Unit filename="lua/luaconf.h" />
 		<Unit filename="lua/lualib.h" />
+		<Unit filename="luabind/FA_LUA_debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="luabind/FA_LUA_function.c">
 			<Option compilerVar="CC" />
 		</Unit>
