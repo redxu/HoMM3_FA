@@ -60,7 +60,43 @@ struct H3_Hero* H3_GetHero(int heroid);
 int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, BYTE add);
 
 /*****	MEMORY	****/
-void* __cdecl H3_Malloc(int size);
-void __cdecl H3_Free(void* po);
+/**
+ * H3内存分配
+ * @param  size [大小]
+ * @return      [内存地址]
+ */
+void* FA_CDECL H3_Malloc(int size);
+
+/**
+ * H3内存释放
+ * @param  po [内存地址]
+ */
+void FA_CDECL H3_Free(void* po);
+
+/**
+ * [对话框创建并载入DEF文件]
+ * @param  ptr     [description]
+ * @param  x       [description]
+ * @param  y       [description]
+ * @param  dx      [description]
+ * @param  itemid  [description]
+ * @param  pcxname [description]
+ * @param  flags   [description]
+ * @return         [description]
+ */
+BYTE* FA_FASTCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
+								int itemid, char* defname, int defpicid, 
+								int p2, int p3, int p4, int flags);
+
+/**
+ * [将H3_DlgBuildDefItem的结果保存]
+ * @param  list     [description]
+ * @param  lastitem [description]
+ * @param  count    [description]
+ * @param  pitem 	[description]
+ * @return          [description]
+ */
+BYTE* FA_FASTCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem);
+
 
 #endif

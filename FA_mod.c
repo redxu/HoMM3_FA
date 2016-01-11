@@ -70,6 +70,7 @@ static BYTE FA_VisitWitchHutResult[] = {
 /**
  * FA_HeroLearnSkillFromScholar Param
  * Human Flag
+ * (Etc,Human flag can get from curplayer.)
  */
 static BYTE FA_HeroLearnSkillFromScholarParam[] = {
 	0x8A, 0x45, 0x14,						//mov al,byte ptr ss:[ebp+0x14]
@@ -80,7 +81,7 @@ static BYTE FA_HeroLearnSkillFromScholarParam[] = {
  * [Hero Learn Skill From Scholar Part1]
  * @return  [1 Learned or Dropped 0 Can't lean]
  */
-static FA_STDCALL int FA_HeroLearnSkillFromScholar(BYTE human) {
+static int FA_STDCALL FA_HeroLearnSkillFromScholar(BYTE human) {
 	//Hero <-- ebx,skill <-- edi
 	//ebp+0x14 args humanflag
 	struct H3_Hero* hero;
@@ -112,7 +113,6 @@ static FA_STDCALL int FA_HeroLearnSkillFromScholar(BYTE human) {
 	*/
 
 	rtv = FA_HeroLearnSkillCheck(hero, skill);
-	FA_Log("human = %d canlen=%d", human, rtv);
 	if(rtv == 0)
 		return 0;
 	if(human == 1) {
@@ -127,6 +127,52 @@ static FA_STDCALL int FA_HeroLearnSkillFromScholar(BYTE human) {
 	}
 
 	return H3_HeroAddSkill(hero, skill, 1);
+}
+
+//004DF7C9  |.  6A 48         push 0x48
+static void FA_STDCALL FA_HeroInfoDlgDrawSkill10(void) {
+	BYTE* item;
+	DWORD callee_ebp, caller_ebp, caller_esi;
+	int i;
+
+	//Draw hero skill panel
+	for(i=0; i<10; i++) {
+		item = (BYTE *)H3_Malloc(0x48);
+		if(item == NULL) {
+			//TODO: need some dirty work! bur realy happend?
+			FA_Log("H3_Malloc Failed!!!");
+			return;
+		}
+		int x = (i % 2 == 0 ? 0x12 : 0xa1);
+		//int y = 0x114 + (i / 2) * 40;
+		int y = 267 + (i / 2) * 40;
+		int id = 0x4f + i;
+		H3_DlgBuildDefItem(item, x, y, 0x2c, 38, id, "SECSK32.def", 0, 0, 0, 0, 0x10);
+
+		//black magic code
+		//Get Caller local vars.
+		FA_EBP(callee_ebp);
+		FA_ESI(caller_esi);		//caller esi eq callee esi.
+		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
+		//8945 E0       mov [ebp-0x20],eax			//eax == item;
+		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+	}
+
+	//black magic again
+	DWORD jmpaddr = 0x004DFA4D;
+	__asm __volatile__ (
+		"movl %0, %%edx \n"
+		: "=m"(jmpaddr)
+	);
+	__asm __volatile__ (
+		"leave \n"
+	);
+	__asm __volatile__ (
+		"jmp *%edx \n"
+	);
 }
 
 //for test
@@ -163,6 +209,9 @@ static struct FA_MOD __mods[] = {
 	{0x004A4AFE, 0, FA_MOD_TYPE_NOP, 59},
 	//test mod
 	{0x004e1afa, (DWORD)TestClick, FA_MOD_TYPE_CALL, 5},
+	//test redraw hero screen
+	//{0x004DF723, 0, FA_MOD_TYPE_NOP, 0xaB},
+	{0x004DF7C9, (DWORD)FA_HeroInfoDlgDrawSkill10, FA_MOD_TYPE_CALL, 0x4f, /*0XF0*/},
 };
 
 /**
