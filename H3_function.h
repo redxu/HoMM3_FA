@@ -54,10 +54,10 @@ struct H3_Hero* H3_GetHero(int heroid);
  * [英雄学习技能]
  * @param  hero  [英雄地址]
  * @param  skill [技能索引]
- * @param  add   [1添加]
+ * @param  level [添加等级]
  * @return       [1成功 0失败]
  */
-int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, BYTE add);
+int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, char level);
 
 /*****	MEMORY	****/
 /**
@@ -84,9 +84,29 @@ void FA_CDECL H3_Free(void* po);
  * @param  flags   [description]
  * @return         [description]
  */
-BYTE* FA_FASTCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
+BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int itemid, char* defname, int defpicid, 
 								int p2, int p3, int p4, int flags);
+
+/**
+ * [对话框创建并载入TXT]
+ * @param  addr    [description]
+ * @param  x       [description]
+ * @param  y       [description]
+ * @param  dx      [description]
+ * @param  dy      [description]
+ * @param  text    [description]
+ * @param  font    [description]
+ * @param  color   [description]
+ * @param  itemid  [description]
+ * @param  align   [description]
+ * @param  bkcolor [description]
+ * @param  flags   [description]
+ * @return         [description]
+ */
+BYTE* FA_THISCALL H3_DlgBuildTxtItem(BYTE* addr, int x, int y, int dx, int dy,
+								char* text, char* font, int color, int itemid,
+								int align, int bkcolor, int flags);
 
 /**
  * [将H3_DlgBuildDefItem的结果保存]
@@ -96,7 +116,7 @@ BYTE* FA_FASTCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
  * @param  pitem 	[description]
  * @return          [description]
  */
-BYTE* FA_FASTCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem);
+BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem);
 
 
 #endif

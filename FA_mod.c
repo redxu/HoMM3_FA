@@ -129,8 +129,8 @@ static int FA_STDCALL FA_HeroLearnSkillFromScholar(BYTE human) {
 	return H3_HeroAddSkill(hero, skill, 1);
 }
 
-//004DF7C9  |.  6A 48         push 0x48
-static void FA_STDCALL FA_HeroInfoDlgDrawSkill10(void) {
+//004DF7C9  |.  6A 48         push 0x48  -->Dlg_HeroInfo
+static void FA_STDCALL FA_HeroInfoDlgDrawSkillDef10(void) {
 	BYTE* item;
 	DWORD callee_ebp, caller_ebp, caller_esi;
 	int i;
@@ -146,8 +146,10 @@ static void FA_STDCALL FA_HeroInfoDlgDrawSkill10(void) {
 		int x = (i % 2 == 0 ? 0x12 : 0xa1);
 		//int y = 0x114 + (i / 2) * 40;
 		int y = 267 + (i / 2) * 40;
-		int id = 0x4f + i;
-		H3_DlgBuildDefItem(item, x, y, 0x2c, 38, id, "SECSK32.def", 0, 0, 0, 0, 0x10);
+		//int id = 0x4f + i;	//4f~58
+		//Orign ID 0x4f -> Redirect To 0x4b
+		int id = 0x4b + i;
+		H3_DlgBuildDefItem(item, x, y, 0x2c, 38, id, "Secskill.def", 0, 0, 0, 0, 0x10);
 
 		//black magic code
 		//Get Caller local vars.
@@ -173,6 +175,86 @@ static void FA_STDCALL FA_HeroInfoDlgDrawSkill10(void) {
 	__asm __volatile__ (
 		"jmp *%edx \n"
 	);
+}
+
+//draw hint info
+static void FA_STDCALL FA_HeroInfoDlgDrawSkillDesc10(void) {
+	BYTE* item;
+	DWORD callee_ebp, caller_ebp, caller_esi;
+	int i;
+
+	//Draw hero skill panel
+	for(i=0; i<10; i++) {
+		//
+		item = (BYTE *)H3_Malloc(0x50);
+		if(item == NULL) {
+			//TODO: need some dirty work! bur realy happend?
+			FA_Log("H3_Malloc Failed!!!");
+			return;
+		}
+		int x = (i % 2 == 0 ? 0x44 : 0xD3);
+		int y = 287 + (i / 2) * 39;
+		//int id = 0x57 + i;	//4f~58
+		int id = 0x55 + i;
+		H3_DlgBuildTxtItem(item, x, y, 0x5a, 0x12, NULL, "smalfont.fnt", 1, id, 0, 0, 0x8);
+
+		//black magic code
+		//Get Caller local vars.
+		FA_EBP(callee_ebp);
+		FA_ESI(caller_esi);		//caller esi eq callee esi.
+		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
+		//8945 E0       mov [ebp-0x20],eax			//eax == item;
+		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+
+
+		item = (BYTE *)H3_Malloc(0x50);
+		if(item == NULL) {
+			//TODO: need some dirty work! bur realy happend?
+			FA_Log("H3_Malloc Failed!!!");
+			return;
+		}
+		x = (i % 2 == 0 ? 0x44 : 0xD3);
+		y = 267 + (i / 2) * 40;
+		//id = 0x5f + i;	//5f~69
+		id = 0x5f + i;
+		H3_DlgBuildTxtItem(item, x, y, 0x5a, 0x12, NULL, "smalfont.fnt", 1, id, 0, 0, 0x8);
+
+		//black magic code
+		//Get Caller local vars.
+		FA_EBP(callee_ebp);
+		FA_ESI(caller_esi);		//caller esi eq callee esi.
+		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
+		//8945 E0       mov [ebp-0x20],eax			//eax == item;
+		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+	}
+
+	//black magic again
+	DWORD jmpaddr = 0x004DFF65;
+	__asm __volatile__ (
+		"movl %0, %%edx \n"
+		: "=m"(jmpaddr)
+	);
+	__asm __volatile__ (
+		"leave \n"
+	);
+	__asm __volatile__ (
+		"jmp *%edx \n"
+	);
+}
+
+//004E2190  |.  BF 4F000000   mov edi,0x4F
+//004E2284  |.  8D46 10       |lea eax,dword ptr ds:[esi+0x10] ->path1.
+//004E22B6  |.  8D46 08       |lea eax,dword ptr ds:[esi+0x8]
+//004E2333      83F9 08       cmp ecx,0x8
+//update heroinfo.
+static void FA_STDCALL FA_HeroInfoDlgUpdate(void) {
+
 }
 
 //for test
@@ -210,8 +292,33 @@ static struct FA_MOD __mods[] = {
 	//test mod
 	{0x004e1afa, (DWORD)TestClick, FA_MOD_TYPE_CALL, 5},
 	//test redraw hero screen
-	//{0x004DF723, 0, FA_MOD_TYPE_NOP, 0xaB},
-	{0x004DF7C9, (DWORD)FA_HeroInfoDlgDrawSkill10, FA_MOD_TYPE_CALL, 0x4f, /*0XF0*/},
+	{0x004DF7C9, (DWORD)FA_HeroInfoDlgDrawSkillDef10, FA_MOD_TYPE_CALL, 0x4f},
+	{0x004DFA4D, (DWORD)FA_HeroInfoDlgDrawSkillDesc10, FA_MOD_TYPE_CALL, 0x50},
+	//dlg_hero_update.
+	{0x4e2191, 0x4b, FA_MOD_TYPE_BYTE, 1},
+	{0x4e219f, 0xb5, FA_MOD_TYPE_BYTE, 1},
+	{0x4e21b0, 0xb6, FA_MOD_TYPE_BYTE, 1},
+	{0x4e221e, 0x0a, FA_MOD_TYPE_BYTE, 1},
+	{0x4e2286, 0x14, FA_MOD_TYPE_BYTE, 1},
+	{0x4e22b8, 0x0a, FA_MOD_TYPE_BYTE, 1},
+	{0x4e2309, 0x0a, FA_MOD_TYPE_BYTE, 1},
+	{0x4e231d, 0x14, FA_MOD_TYPE_BYTE, 1},
+	{0x4e2332, 0xB5, FA_MOD_TYPE_BYTE, 1},
+	{0x4e2335, 0x0a, FA_MOD_TYPE_BYTE, 1},
+	//mouse click? rejudge
+	{0x4de77b, 0x4b, FA_MOD_TYPE_BYTE, 1},
+	{0x4de780, 0x54, FA_MOD_TYPE_BYTE, 1},
+	{0x4de785, 0xb5, FA_MOD_TYPE_BYTE, 1},
+	{0x4de78a, 0x55, FA_MOD_TYPE_BYTE, 1},
+	{0x4de794, 0xab, FA_MOD_TYPE_BYTE, 1},
+	{0x4de7a2, 0x68, FA_MOD_TYPE_BYTE, 1},
+	//mouse move?
+	{0x4dbe2d, 0x4b, FA_MOD_TYPE_BYTE, 1},
+	{0x4dbe32, 0x54, FA_MOD_TYPE_BYTE, 1},
+	{0x4dbe37, 0xb5, FA_MOD_TYPE_BYTE, 1},
+	{0x4dbe3c, 0x55, FA_MOD_TYPE_BYTE, 1},
+	{0x4dbe46, 0xab, FA_MOD_TYPE_BYTE, 1},
+	{0x4dbe50, 0x68, FA_MOD_TYPE_BYTE, 1},
 };
 
 /**
@@ -243,6 +350,12 @@ BOOL FA_Mod_Init(void) {
 		}
 		else if(mod->Type == FA_MOD_TYPE_NOP) {
 			if(!PatchCode((PVOID)mod->Orig, patch, mod->Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
+				return FALSE;
+			}
+		}
+		else if(mod->Type == FA_MOD_TYPE_BYTE) {
+			if(!PatchCode((PVOID)mod->Orig, (BYTE *)&mod->Detour, mod->Size)) {
 				FA_Log("patch 0x%x Failed!", mod->Orig);
 				return FALSE;
 			}

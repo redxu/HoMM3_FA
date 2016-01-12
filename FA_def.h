@@ -17,9 +17,10 @@
 #define FA_MOD_TYPE_JUMP	1
 #define FA_MOD_TYPE_WRITE	2
 #define FA_MOD_TYPE_NOP		3
+#define FA_MOD_TYPE_BYTE	4
 
 #define FA_ARRAYSIZE(T)		(sizeof(T)/sizeof((T)[0]))
-
+#define FA_VERSION			"0.1beta"
 
 #define FA_EXPORT	__declspec(dllexport)
 
@@ -59,6 +60,7 @@
 
 /** FA ASM FUNCTION **/
 //Get Register Point
+#if defined(__GNUC__)
 #define FA_EAX(val)	 __asm__ __volatile__ ("movl %%eax, %0" : "=m"(val));
 #define FA_EBX(val)	 __asm__ __volatile__ ("movl %%ebx, %0" : "=m"(val));
 #define FA_ECX(val)	 __asm__ __volatile__ ("movl %%ecx, %0" : "=m"(val));
@@ -66,6 +68,8 @@
 #define FA_EBP(val)	 __asm__ __volatile__ ("movl %%ebp, %0" : "=m"(val));
 #define FA_EDI(val)	 __asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 __asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
+#elif defined(_MSC_VER)
+#endif
 
 //Get Value From Point Macro not support string
 #define FA_GET_PV(type, point)	(*((type *)(point)))

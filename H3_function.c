@@ -90,13 +90,13 @@ struct H3_Hero* H3_GetHero(int heroid) {
  * [英雄学习技能]
  * @param  hero  [英雄地址]
  * @param  skill [技能索引]
- * @param  add   [1添加]
+ * @param  level [添加等级]
  * @return       [1成功 0失败]
  */
-int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, BYTE add) {
-	typedef int (FA_THISCALL *F)(struct H3_Hero*, int, BYTE);
+int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, char level) {
+	typedef int (FA_THISCALL *F)(struct H3_Hero*, int, char);
 	F proxy = (F)0x4e2540;
-	return proxy(hero, skill, add);
+	return proxy(hero, skill, level);
 }
 
 /**
@@ -131,13 +131,38 @@ void FA_CDECL H3_Free(void* po) {
  * @param  flags   [description]
  * @return         [description]
  */
-BYTE* FA_FASTCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
+BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int itemid, char* defname, int defpicid, 
 								int p2, int p3, int p4, int flags) {
 	typedef BYTE* (FA_THISCALL *F)(BYTE*, int, int, int, int,
 								int, char*, int, int, int, int, int);
 	F proxy = (F)0x4EA800;
 	return proxy(addr, x, y, dx, dy, itemid, defname, defpicid, p2, p3, p4, flags);
+}
+
+/**
+ * [对话框创建并载入TXT]
+ * @param  addr    [description]
+ * @param  x       [description]
+ * @param  y       [description]
+ * @param  dx      [description]
+ * @param  dy      [description]
+ * @param  text    [description]
+ * @param  font    [description]
+ * @param  color   [description]
+ * @param  itemid  [description]
+ * @param  align   [description]
+ * @param  bkcolor [description]
+ * @param  flags   [description]
+ * @return         [description]
+ */
+BYTE* FA_THISCALL H3_DlgBuildTxtItem(BYTE* addr, int x, int y, int dx, int dy,
+								char* text, char* font, int color, int itemid,
+								int align, int bkcolor, int flags) {
+	typedef BYTE* (FA_THISCALL *F)(BYTE*, int, int, int, int,
+								char*, char*, int, int, int, int, int);
+	F proxy = (F)0x5BC6A0;
+	return proxy(addr, x, y, dx, dy, text, font, color, itemid, align, bkcolor, flags);
 }
 
 /**
@@ -148,7 +173,7 @@ BYTE* FA_FASTCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
  * @param  pitem 	[description]
  * @return          [description]
  */
-BYTE* FA_FASTCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem) {
+BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem) {
 	typedef BYTE* (FA_THISCALL *F)(BYTE*, BYTE*, int, BYTE*);
 	F proxy = (F)0x5FE2D0;
 	return proxy(list, lastitem, count, pitem);
