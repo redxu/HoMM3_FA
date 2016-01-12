@@ -15,6 +15,10 @@ struct FA_MOD {
 	DWORD Size;			/**补丁大小**/
 };
 
+/**
+ * mod_queue
+ */
+static struct FA_mod_q __mq;
 
 /**
  * FA LoadBar加载画面
@@ -280,9 +284,9 @@ static struct FA_MOD __mods[] = {
 	//RestartGame->LoadBar
 	{0x004ef854, (DWORD)FA_LoadBar, FA_MOD_TYPE_CALL, 10},
 	//Visit Witch Hut->Choose Skill
-	{0x004a7e63, (DWORD)FA_VisitWitchHut, FA_MOD_TYPE_CALL, 34},
+	//{0x004a7e63, (DWORD)FA_VisitWitchHut, FA_MOD_TYPE_CALL, 34},
 	//Visit Witch Judge Choose Result
-	{0x004a7e68, (DWORD)FA_VisitWitchHutResult, FA_MOD_TYPE_WRITE, sizeof(FA_VisitWitchHutResult)},
+	//{0x004a7e68, (DWORD)FA_VisitWitchHutResult, FA_MOD_TYPE_WRITE, sizeof(FA_VisitWitchHutResult)},
 	//Learn Skill From Scholar Param
 	{0x004A4AE6, (DWORD)FA_HeroLearnSkillFromScholarParam, FA_MOD_TYPE_WRITE, sizeof(FA_HeroLearnSkillFromScholarParam)},
 	//Learn Skill From Scholar
@@ -321,11 +325,15 @@ static struct FA_MOD __mods[] = {
 	{0x4dbe50, 0x68, FA_MOD_TYPE_BYTE, 1},
 };
 
+//extern from FA_Heroskill
+extern void FA_HeroSkill_Init(void);
+
 /**
  * 修改HoMM3的流程
  * @return  [TRUE-成功 FALSE-失败]
  */
 BOOL FA_Mod_Init(void) {
+	/*
 	int i,n;
 	unsigned char patch[256];
 
@@ -365,7 +373,60 @@ BOOL FA_Mod_Init(void) {
 			return FALSE;
 		}
 	}
+	*/
+	memset(&__mq, 0, sizeof(__mq));
+	FA_HeroSkill_Init();
+
+	int i;
+	unsigned char patch[1024];
+
+	for(i=0; i<__mq.sz; i++) {
+		struct FA_mod* mod = &__mq.mods[i];
+		memset(patch, 0x90, sizeof(patch));
+		if(mod->Type == FA_MOD_TYPE_CALL) {
+			DWORD jmpoff = mod->Detour - mod->Orig - 5;
+			patch[0] = 0xe8;
+			memcpy(patch+1, &jmpoff, 4);
+			if(!PatchCode((PVOID)mod->Orig, patch, mod->U.Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
+				return FALSE;
+			}
+		}
+		else if(mod->Type == FA_MOD_TYPE_WRITE) {
+			if(!PatchCode((PVOID)mod->Orig, (PVOID)mod->Detour, mod->U.Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
+				return FALSE;
+			}
+		}
+		else if(mod->Type == FA_MOD_TYPE_NOP) {
+			if(!PatchCode((PVOID)mod->Orig, patch, mod->U.Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
+				return FALSE;
+			}
+		}
+		else if(mod->Type == FA_MOD_TYPE_BYTE) {
+			if(!PatchCode((PVOID)mod->Orig, (BYTE *)&mod->Detour, mod->U.Size)) {
+				FA_Log("patch 0x%x Failed!", mod->Orig);
+				return FALSE;
+			}
+		}
+		else {
+			FA_Log("unhandle mod type %d", mod->Type);
+			return FALSE;
+		}
+	}
 
 	return TRUE;
 }
 
+
+
+/**
+ * [注册MOD信息]
+ * @param mod [mod 数组]
+ * @param sz  [mod 大小]
+ */
+void FA_Mod_Register(struct FA_mod* mod, int sz) {
+	memcpy(&__mq.mods[__mq.sz], mod, sz*sizeof(struct FA_mod));
+	__mq.sz += sz;
+}

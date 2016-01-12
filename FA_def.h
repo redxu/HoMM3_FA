@@ -18,6 +18,7 @@
 #define FA_MOD_TYPE_WRITE	2
 #define FA_MOD_TYPE_NOP		3
 #define FA_MOD_TYPE_BYTE	4
+#define FA_MOD_TYPE_DETOUR	10
 
 #define FA_ARRAYSIZE(T)		(sizeof(T)/sizeof((T)[0]))
 #define FA_VERSION			"0.1beta"
@@ -68,6 +69,23 @@
 #define FA_EBP(val)	 __asm__ __volatile__ ("movl %%ebp, %0" : "=m"(val));
 #define FA_EDI(val)	 __asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 __asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
+#define FA_JMP(addr, esp)  			\
+		do{							\
+		DWORD __jmp_addr_ = addr; 	\
+		__asm __volatile__ (		\
+			"movl %0, %%edx \n"		\
+			: "=m"(__jmp_addr_)		\
+		);							\
+		__asm __volatile__ (		\
+			"leave \n"				\
+		);							\
+		__asm __volatile__ (		\
+			"add $"#esp", %esp \n"	\
+		);							\
+		__asm __volatile__ (		\
+			"jmp *%edx \n"			\
+		);							\
+		}while(0)
 #elif defined(_MSC_VER)
 #endif
 
