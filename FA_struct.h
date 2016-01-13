@@ -23,7 +23,7 @@ struct H3_Hero {
 	DWORD _unk_id;
 	BYTE player;			//0~7 ff
 	char name[13];			//hero name
-	DWORD type;				//0~17 骑士,牧师,... etc
+	DWORD type;				//+30h 0~17 骑士,牧师,... etc
 	BYTE pic;
 	WORD movx;				//move to x (0~143)格
 	WORD movy;				//move to y (0~143)
@@ -44,7 +44,7 @@ struct H3_Hero {
 	int creaturecount[7];	//off
 	BYTE skilllv[28];		//skill level [0~3]
 	BYTE skilltree[28];		//skill tree  [0~10 show order]
-	DWORD skillcount;		//0ffx102
+	DWORD skillcount;		//+101h
 	BYTE _un4[17];
 	char morale;
 	BYTE _un5[3];
@@ -108,6 +108,25 @@ struct H3_core {
 
 #pragma pack(pop)
 
+/**
+ * Mod struct
+ */
+struct FA_mod {
+	DWORD Type;			//Type see FA_def.h
+	DWORD Orig;			//Orig address
+	DWORD Detour;		//Detour address
+	union {
+		DWORD Size;		//Mod Size
+		DWORD Proxy;	//Detour Proxy
+	} U;
+};
 
+/**
+ * Mod queue struct
+ */
+struct FA_mod_q {
+	int sz;
+	struct FA_mod mods[2048];
+};
 
 #endif

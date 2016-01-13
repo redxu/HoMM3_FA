@@ -7,11 +7,6 @@
 #include "detour/hookapi.h"
 #include "FA_detour.h"
 
-struct FA_DETOUR {
-	DWORD Orig;				//原始地址
-	DWORD Detour;			//新地址
-	DWORD Proxy;			//原代理地址
-};
 
 //declare
 static DWORD _FA_Detour_GetProxy(DWORD detour);
@@ -42,10 +37,20 @@ static void* FA_FASTCALL FA_DoGlobalEvents(void* ecx) {
 	return rtv;
 }
 
+/**
+ * [CheckReg Call]
+ * @return  [1~6 error >7 success]
+ */
+static int FA_CDECL FA_CheckReg(void) {
+	return 7;
+}
 
-struct FA_DETOUR __detours[] = {
+
+struct FA_mod __detours[] = {
 	//GlobalEvents,before newturn
-	{0x4cd5d0, (DWORD)FA_DoGlobalEvents, 0},
+	{FA_MOD_TYPE_DETOUR, 0x4cd5d0, (DWORD)FA_DoGlobalEvents, 0},
+	//check reg
+	{FA_MOD_TYPE_DETOUR, 0x50c380, (DWORD)FA_CheckReg, 0},
 };
 
 
@@ -59,8 +64,8 @@ static DWORD _FA_Detour_GetProxy(DWORD detour) {
 	int i,n;
 	n = FA_ARRAYSIZE(__detours);
 	for(i=0; i<n; i++) {
-		if(__detours[i].Detour == detour)
-			return __detours[i].Proxy;
+		if(__detours[i].Type == FA_MOD_TYPE_DETOUR && __detours[i].Detour == detour)
+			return __detours[i].U.Proxy;
 	}
 
 	return 0;
@@ -74,12 +79,12 @@ BOOL FA_Detour_Init(void) {
 	int i,n;
 	n = FA_ARRAYSIZE(__detours);
 	for(i=0; i<n; i++) {
-		__detours[i].Proxy = (DWORD)HookFunction((void *)__detours[i].Orig, (void *)__detours[i].Detour);
-		if(__detours[i].Proxy == 0) {
+		__detours[i].U.Proxy = (DWORD)HookFunction((void *)__detours[i].Orig, (void *)__detours[i].Detour);
+		if(__detours[i].U.Proxy == 0) {
 			FA_Log("FA_Detour_Init 0x%x --> 0x%x Failed!", __detours[i].Orig, __detours[i].Detour);
 			return FALSE;
 		}
-		FA_Log("Detour Org 0x%x --> 0x%x (0x%x) Success!", __detours[i].Orig, __detours[i].Detour, __detours[i].Proxy);
+		FA_Log("Detour Org 0x%x --> 0x%x (0x%x) Success!", __detours[i].Orig, __detours[i].Detour, __detours[i].U.Proxy);
 	}
 
 	return TRUE;

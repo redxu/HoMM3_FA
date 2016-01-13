@@ -69,6 +69,7 @@
 #define FA_EBP(val)	 __asm__ __volatile__ ("movl %%ebp, %0" : "=m"(val));
 #define FA_EDI(val)	 __asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 __asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
+#define FA_SET_EAX(val)	__asm__ __volatile__ ("movl %0, %%eax" : "=m"(val));
 #define FA_JMP(addr, esp)  			\
 		do{							\
 		DWORD __jmp_addr_ = addr; 	\
