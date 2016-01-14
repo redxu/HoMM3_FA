@@ -8,7 +8,6 @@
 #include "FA_struct.h"
 #include "FA_debug.h"
 #include "H3_Function.h"
-#include "FA_Function.h"
 #include "FA_mod.h"
 
 //004DF7C9  |.  6A 48         push 0x48  -->Dlg_HeroInfo
@@ -112,14 +111,14 @@ static struct FA_mod __mods[] = {
 	{FA_MOD_TYPE_BYTE, 0x4e231d, 0x14, 1},
 	{FA_MOD_TYPE_BYTE, 0x4e2332, 0xB5, 1},
 	{FA_MOD_TYPE_BYTE, 0x4e2335, 0x0a, 1},
-	//HeroIndo Dlg mouse click
+	//HeroInfo Dlg mouse click
 	{FA_MOD_TYPE_BYTE, 0x4de77b, 0x4b, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de780, 0x54, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de785, 0xb5, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de78a, 0x55, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de794, 0xab, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de7a2, 0x68, 1},
-	//HeroIndo Dlg mouse move
+	//HeroInfo Dlg mouse move
 	{FA_MOD_TYPE_BYTE, 0x4dbe2d, 0x4b, 1},
 	{FA_MOD_TYPE_BYTE, 0x4dbe32, 0x54, 1},
 	{FA_MOD_TYPE_BYTE, 0x4dbe37, 0xb5, 1},

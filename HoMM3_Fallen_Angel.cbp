@@ -31,29 +31,11 @@
 				<Option createDefFile="1" />
 				<Option createStaticLib="1" />
 				<Compiler>
-					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="user32" />
-					<Add library="libs\liblua.a" />
-				</Linker>
-			</Target>
-			<Target title="DebugCLang">
-				<Option output="bin/Debug/HoMM3_FA" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
-				<Option type="3" />
-				<Option compiler="clang" />
-				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
-				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-g" />
-					<Add option="-DBUILD_DLL" />
-				</Compiler>
-				<Linker>
 					<Add library="user32" />
 					<Add library="libs\liblua.a" />
 				</Linker>
@@ -70,11 +52,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_detour.h" />
-		<Unit filename="FA_function.c">
+		<Unit filename="FA_dlg_heroinfo.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="FA_function.h" />
 		<Unit filename="FA_heroskill.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_loadbar.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_lua.c">
