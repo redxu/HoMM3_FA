@@ -8,8 +8,62 @@
 #include "FA_struct.h"
 #include "FA_debug.h"
 #include "H3_Function.h"
-#include "FA_Function.h"
 #include "FA_mod.h"
+
+/**
+ * [Check Hero Can Learn skill]
+ * @param  hero  [hero]
+ * @param  skill [skill id]
+ * @return       [1 yes 0 no]
+ */
+FA_EXPORT int FA_HeroLearnSkillCheck(struct H3_Hero* hero, int skill) {
+	int n;
+	n = hero->skillcount;
+
+	//check already learned?
+	if(hero->skilllv[skill] >= 3) {
+		//max level
+		return 0;
+	}
+	else if(hero->skilllv[skill] > 0) {
+		return 1;
+	}
+
+	//not learned,check level and skillcount
+	if(n < 8) {
+		return 1;
+	}
+	else if(n < 9 && hero->level >= 25) {
+		return 1;
+	}
+	else if(n < 10 && hero->level >= 30) {
+		return 1;
+	}
+
+	return 0;
+}
+
+/**
+ * [Check Hero can learn new skill]
+ * @param  hero [hero]
+ * @return      [1 can 0 can't]
+ */
+FA_EXPORT int FA_HeroLearnNewSkillCheck(struct H3_Hero* hero) {
+	int n;
+	n = hero->skillcount;
+	if(n < 8) {
+		return 1;
+	}
+	else if(n < 9 && hero->level >= 25) {
+		return 1;
+	}
+	else if(n < 10 && hero->level >= 30) {
+		return 1;
+	}
+
+	return 0;
+}
+
 
 //004A7CF0  Visit Witch Hut Call
 //004A7DCE      83F8 08       cmp eax,0x8   skillnumlimit
@@ -140,7 +194,7 @@ static void FA_HeroLearnSkillFromUniversityClick(void) {
 //Seer Hut
 
 //local mods for heroskill
-static struct FA_mod __mods[] = {
+static struct FA_Mod __mods[] = {
 	//Learn Skill From Witch Hut
 	{FA_MOD_TYPE_CALL, 0x004a7e63, (DWORD)FA_HeroLearnSkillFromWitchHut, 34},
 	//Learn Skill From Scholar

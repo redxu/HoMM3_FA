@@ -32,7 +32,7 @@ static int FA_STDCALL FA_LoadBar(void) {
 }
 
 //local mods for heroskill
-static struct FA_mod __mods[] = {
+static struct FA_Mod __mods[] = {
 	//NewGame->LoadBar
 	{FA_MOD_TYPE_CALL, 0x004ed9ea, (DWORD)FA_LoadBar, 10},
 	//RestartGame->LoadBar

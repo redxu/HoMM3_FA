@@ -8,6 +8,7 @@
 #define __FA_MOD__H__
 
 #include <windows.h>
+#include "FA_struct.h"
 
 /**
  * 修改HoMM3的流程
@@ -20,7 +21,7 @@ BOOL FA_Mod_Init(void);
  * @param mod [mod 数组]
  * @param sz  [mod 大小]
  */
-void FA_Mod_Register(struct FA_mod* mod, int sz);
+void FA_Mod_Register(struct FA_Mod* mod, int sz);
 
 
 #endif

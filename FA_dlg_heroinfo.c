@@ -34,7 +34,7 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 		y = 267 + (i / 2) * 40;
 		//Orign ID 0x4f -> Redirect To 0x4b
 		id = 0x4b + i;
-		H3_DlgBuildDefItem(item, x, y, 0x2c, 38, id, "Secskill.def", 0, 0, 0, 0, 0x10);
+		H3_DlgBuildDefItem(item, x, y, 0x2c, 38, id, "Secskill38.def", 0, 0, 0, 0, 0x10);
 
 		//black magic code
 		//Get Caller local vars.
@@ -97,7 +97,7 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 
 
 //local mods for dlg_heroinfo
-static struct FA_mod __mods[] = {
+static struct FA_Mod __mods[] = {
 	//HeroInfo Dlg Show 10 Skills
 	{FA_MOD_TYPE_CALL, 0x004DF7C9, (DWORD)FA_DlgHeroInfoDrawSkill10, 0x4f},
 	//HeroInfo Dlg_update.
@@ -125,6 +125,8 @@ static struct FA_mod __mods[] = {
 	{FA_MOD_TYPE_BYTE, 0x4dbe3c, 0x55, 1},
 	{FA_MOD_TYPE_BYTE, 0x4dbe46, 0xab, 1},
 	{FA_MOD_TYPE_BYTE, 0x4dbe50, 0x68, 1},
+	//HeroInfo Dlg bg -> heroscr5.pcx
+	{FA_MOD_TYPE_WRITE, 0x00679DB8, (DWORD)"heroscr5.pcx", 12},
 	//TEST mouse click hero head
 	//{0x004e1afa, (DWORD)TestClick, FA_MOD_TYPE_CALL, 5},
 };

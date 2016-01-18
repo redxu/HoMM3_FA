@@ -178,3 +178,21 @@ BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pit
 	F proxy = (F)0x5FE2D0;
 	return proxy(list, lastitem, count, pitem);
 }
+
+/**
+ * [初始化LOD文件]
+ * @param  lod     [description]
+ * @param  lodname [description]
+ * @return         [description]
+ */
+int FA_FASTCALL H3_LOD_Init(BYTE* lod, char* lodname) {
+	typedef int (FA_FASTCALL *F)(BYTE*, char *);
+	F proxy = (F)0x559420;
+	return proxy(lod, lodname);
+}
+
+int FA_THISCALL H3_LOD_LoadHeader(BYTE* this, const char* fullpath, BYTE readonly) {
+	typedef int (FA_THISCALL *F)(BYTE*, const char*, BYTE);
+	F proxy = (F)0x4FAF30;
+	return proxy(this, fullpath, readonly);
+}

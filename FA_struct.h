@@ -88,8 +88,8 @@ struct H3_Player {
 	int tophero;
 	BYTE _u4[0x54];
 	char name[21];			//name.
-	BYTE activeflag;		//+E1 1 active 0 sleep
-	BYTE playerflag;		//+E2 1 player 0 computer
+	BYTE activeflag;		//+E1h 1 active 0 sleep
+	BYTE playerflag;		//+E2h 1 player 0 computer
 	BYTE _u5[0x45];
 	double resimp[8];		//unknow
 };
@@ -97,7 +97,7 @@ struct H3_Player {
 /**
  * H3 core struct 0x4e7cc
  */
-struct H3_core {
+struct H3_Core {
 	BYTE _u1[0xa4];
 	struct H3_Hero heroes[0x9c];
 	BYTE _u2[0x1ea];
@@ -109,9 +109,17 @@ struct H3_core {
 #pragma pack(pop)
 
 /**
+ * H3 Lod Item table struct
+ */
+struct H3_LodItemTable {
+	DWORD count;
+	DWORD* itemlist;
+};
+
+/**
  * Mod struct
  */
-struct FA_mod {
+struct FA_Mod {
 	DWORD Type;			//Type see FA_def.h
 	DWORD Orig;			//Orig address
 	DWORD Detour;		//Detour address
@@ -124,9 +132,9 @@ struct FA_mod {
 /**
  * Mod queue struct
  */
-struct FA_mod_q {
+struct FA_Mod_Q {
 	int sz;
-	struct FA_mod mods[2048];
+	struct FA_Mod mods[2048];
 };
 
 #endif

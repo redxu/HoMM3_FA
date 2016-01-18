@@ -118,5 +118,15 @@ BYTE* FA_THISCALL H3_DlgBuildTxtItem(BYTE* addr, int x, int y, int dx, int dy,
  */
 BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem);
 
+/**
+ * [初始化LOD文件]
+ * @param  lod     [description]
+ * @param  lodname [description]
+ * @return         [description]
+ */
+int FA_FASTCALL H3_LOD_Init(BYTE* lod, char* lodname);
+
+int FA_THISCALL H3_LOD_LoadHeader(BYTE* this, const char* fullpath, BYTE readonly);
+
 
 #endif

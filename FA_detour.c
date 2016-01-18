@@ -46,7 +46,7 @@ static int FA_CDECL FA_CheckReg(void) {
 }
 
 
-struct FA_mod __detours[] = {
+struct FA_Mod __detours[] = {
 	//GlobalEvents,before newturn
 	{FA_MOD_TYPE_DETOUR, 0x4cd5d0, (DWORD)FA_DoGlobalEvents, 0},
 	//check reg

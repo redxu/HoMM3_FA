@@ -61,6 +61,9 @@
 		<Unit filename="FA_loadbar.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="FA_lod.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="FA_lua.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -14,7 +14,7 @@
 /**
  * mod_queue
  */
-static struct FA_mod_q __mq;
+static struct FA_Mod_Q __mq;
 
 
 //extern from FA_Heroskill
@@ -23,6 +23,8 @@ extern void FA_HeroSkill_Init(void);
 extern void FA_Loadbar_Init(void);
 //extern from FA_DlgHeroInfo
 extern void FA_DlgHeroInfo_Init(void);
+//extern from FA_Lod
+extern void FA_Lod_Init(void);
 
 /**
  * 修改HoMM3的流程
@@ -36,9 +38,10 @@ BOOL FA_Mod_Init(void) {
 	FA_Loadbar_Init();
 	FA_HeroSkill_Init();
 	FA_DlgHeroInfo_Init();
+	FA_Lod_Init();
 
 	for(i=0; i<__mq.sz; i++) {
-		struct FA_mod* mod = &__mq.mods[i];
+		struct FA_Mod* mod = &__mq.mods[i];
 		memset(patch, 0x90, sizeof(patch));
 		if(mod->Type == FA_MOD_TYPE_CALL) {
 			DWORD jmpoff = mod->Detour - mod->Orig - 5;
@@ -83,7 +86,7 @@ BOOL FA_Mod_Init(void) {
  * @param mod [mod 数组]
  * @param sz  [mod 大小]
  */
-void FA_Mod_Register(struct FA_mod* mod, int sz) {
-	memcpy(&__mq.mods[__mq.sz], mod, sz*sizeof(struct FA_mod));
+void FA_Mod_Register(struct FA_Mod* mod, int sz) {
+	memcpy(&__mq.mods[__mq.sz], mod, sz*sizeof(struct FA_Mod));
 	__mq.sz += sz;
 }
