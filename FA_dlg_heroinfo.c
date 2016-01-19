@@ -95,11 +95,21 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 	FA_JMP(0x004DFF65, 4);
 }
 
+//HeroInfo Dlg Exp and Spell def
+static const char* PSKIL38 = "PSKIL38.def";
+
 
 //local mods for dlg_heroinfo
 static struct FA_Mod __mods[] = {
 	//HeroInfo Dlg Show 10 Skills
-	{FA_MOD_TYPE_CALL, 0x004DF7C9, (DWORD)FA_DlgHeroInfoDrawSkill10, 0x4f},
+	{FA_MOD_TYPE_CALL, 0x4DF7C9, (DWORD)FA_DlgHeroInfoDrawSkill10, 0x4f},
+	//HeroInfo Dlg Show Exp and Spell
+	{FA_MOD_TYPE_WRITE, 0x4e0dd3+1, (DWORD)&PSKIL38, 4},
+	{FA_MOD_TYPE_BYTE, 0x4e0dda+1, 0x26, 1},
+	{FA_MOD_TYPE_BYTE, 0x4e0ddf, 0xe2, 1},
+	{FA_MOD_TYPE_WRITE, 0x4e0e1d+1, (DWORD)&PSKIL38, 4},
+	{FA_MOD_TYPE_BYTE, 0x4e0e24+1, 0x26, 1},
+	{FA_MOD_TYPE_BYTE, 0x4e0e28+1, 0xe2, 1},
 	//HeroInfo Dlg_update.
 	{FA_MOD_TYPE_BYTE, 0x4e2191, 0x4b, 1},
 	{FA_MOD_TYPE_BYTE, 0x4e219f, 0xb5, 1},
@@ -112,7 +122,7 @@ static struct FA_Mod __mods[] = {
 	{FA_MOD_TYPE_BYTE, 0x4e2332, 0xB5, 1},
 	{FA_MOD_TYPE_BYTE, 0x4e2335, 0x0a, 1},
 	//HeroInfo Dlg mouse click
-	{FA_MOD_TYPE_BYTE, 0x4de77b, 0x4b, 1},
+	{FA_MOD_TYPE_BYTE, 0x4de779+2, 0x4b, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de780, 0x54, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de785, 0xb5, 1},
 	{FA_MOD_TYPE_BYTE, 0x4de78a, 0x55, 1},

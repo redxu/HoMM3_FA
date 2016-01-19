@@ -190,8 +190,21 @@ static void FA_HeroLearnSkillFromUniversityClick(void) {
 	}
 }
 
-//00574179  |.  83B9 01010000>cmp dword ptr ds:[ecx+0x101],0x8
-//Seer Hut
+/**
+ * [Hero ADPK Limit In HeroInfoDlg]
+ */
+static BYTE FA_Hero_PSkill_Limit1[] = {
+	0x25, 0xff, 0x00, 0x00, 0x00,			//and eax, 0xff
+	0xeb, 0x15,								//jmp 04e199b
+};
+
+/**
+ * [Hero ADPK Limit In SmallPanel]
+ */
+static BYTE FA_Hero_PSkill_Limit2[] = {
+	0x25, 0xff, 0x00, 0x00, 0x00,			//and eax, 0xff
+	0xeb, 0x18,								//jmp 04519d5
+};
 
 //local mods for heroskill
 static struct FA_Mod __mods[] = {
@@ -213,6 +226,9 @@ static struct FA_Mod __mods[] = {
 	{FA_MOD_TYPE_CALL, 0x005F0F4A, (DWORD)FA_HeroLearnSkillFromUniversityClick, 9},
 	//Learn Skill From Seer Patch to 10 ... 先知小屋送技能
 	{FA_MOD_TYPE_BYTE, 0x0057417F, 0x0a, 1},
+	//Hero ADPK(PSKILL) Patch to 255
+	//{FA_MOD_TYPE_WRITE, 0x004e197f, (DWORD)FA_Hero_PSkill_Limit1, sizeof(FA_Hero_PSkill_Limit1)},
+	//{FA_MOD_TYPE_WRITE, 0x004519b6, (DWORD)FA_Hero_PSkill_Limit2, sizeof(FA_Hero_PSkill_Limit2)},
 };
 
 

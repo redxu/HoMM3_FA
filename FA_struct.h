@@ -18,7 +18,7 @@ struct H3_Hero {
 	long plotype; 			//??
 	DWORD P10Cflag;
 	DWORD plSetup;
-	WORD cursp;				//left spell magic points
+	WORD cursp;				//+18h left spell magic points
 	int number;
 	DWORD _unk_id;
 	BYTE player;			//0~7 ff
@@ -64,7 +64,7 @@ struct H3_Hero {
 	long _unmes2;
 	BYTE spell[70];			//spell 修习地址
 	BYTE spellb[70];		//spell 记录地址
-	char adpk[4];			//attack defance power knowledge
+	char adpk[4];			//+476h attack defance power knowledge
 	BYTE _un8[24];
 };
 

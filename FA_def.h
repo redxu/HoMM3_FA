@@ -12,8 +12,6 @@
 #define WORD uint16_t
 #endif
 
-#define DW(x)	(DWORD)(x)
-
 /**   MOD Type **/
 #define FA_MOD_TYPE_CALL	0
 #define FA_MOD_TYPE_JUMP	1
@@ -54,6 +52,11 @@
 //MessageBox
 #define FA_MESSAGEBOX_YES	0x7805
 #define FA_MESSAGEBOX_NO	0x7806
+//Sec skills
+#define FA_SSKILL_MYSTICISM_TABLE	0x63E9C8
+#define FA_SSKILL_OFFENCE_TABLE		0x63E9F8
+#define FA_SSKILL_ARMORER_TABLE		0x63EA08
+#define FA_SSKILL_RESISTANCE_TABLE	0x63EA48
 
 //LOD 最大LOD数量
 #define FA_MAX_LOD			16
