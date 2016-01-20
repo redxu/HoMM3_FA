@@ -78,7 +78,7 @@ static void FA_HeroLearnSkillFromWitchHut(void) {
 	FA_EAX(skilltype);
 	rtv = H3_MessageBox(msg, 2, 0x14, skilltype, 0);
 	if(rtv == FA_MESSAGEBOX_NO) {
-		FA_JMP(0x004a7e8f, 4);
+		FA_JMP_D(0x004a7e8f, 4);
 	}
 	return;
 }
@@ -149,10 +149,10 @@ static void FA_HeroLevelUp_SkillNum(void) {
 	//restore eax
 	FA_SET_EAX(hero->type);
 	if(rtv == 1) {
-		FA_JMP(0x004DAFDB, 4);
+		FA_JMP_B(0x004DAFDB, 4);
 	}
 	else {
-		FA_JMP(0x004DAFD1, 4);
+		FA_JMP_B(0x004DAFD1, 4);
 	}
 }
 
@@ -168,7 +168,7 @@ static void FA_HeroLearnSkillFromUniversity(void) {
 	FA_ECX(hero);
 	rtv = FA_HeroLearnNewSkillCheck(hero);
 	if(rtv == 1) {
-		FA_JMP(0x005F0CEA, 4);
+		FA_JMP_D(0x005F0CEA, 4);
 	}
 }
 
@@ -186,7 +186,7 @@ static void FA_HeroLearnSkillFromUniversityClick(void) {
 	//restore eax
 	FA_SET_EAX(hero);
 	if(rtv == 1) {
-		FA_JMP(0x005F0F64, 4);
+		FA_JMP_D(0x005F0F64, 4);
 	}
 }
 

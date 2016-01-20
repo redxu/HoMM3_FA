@@ -43,15 +43,19 @@
 
 /** FA SOD DEFINE **/
 //基址
-#define FA_ADDR_BASE        0x699538
+#define FA_ADDR_BASE        		0x699538
+
+//Hero Levelup Exp 12
+#define FA_ADDR_HERO_LVUPEXP12		0x63AC20
 
 //GAMETYPE
-#define FA_ADDR_GAMETYPE	0x698A40
-#define FA_GAMETYPE_SINGLE	0
-#define FA_GAMETYPE_HOTSEAT	3
+#define FA_ADDR_GAMETYPE			0x698A40
+#define FA_GAMETYPE_SINGLE			0
+#define FA_GAMETYPE_HOTSEAT			3
 //MessageBox
-#define FA_MESSAGEBOX_YES	0x7805
-#define FA_MESSAGEBOX_NO	0x7806
+#define FA_MESSAGEBOX_YES			0x7805
+#define FA_MESSAGEBOX_NO			0x7806
+
 //Sec skills
 #define FA_SSKILL_MYSTICISM_TABLE	0x63E9C8
 #define FA_SSKILL_OFFENCE_TABLE		0x63E9F8
@@ -59,7 +63,7 @@
 #define FA_SSKILL_RESISTANCE_TABLE	0x63EA48
 
 //LOD 最大LOD数量
-#define FA_MAX_LOD			16
+#define FA_MAX_LOD					8
 
 
 
@@ -78,7 +82,26 @@
 #define FA_EDI(val)	 	__asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 	__asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
 #define FA_SET_EAX(val)	__asm__ __volatile__ ("movl %0, %%eax" : "=m"(val));
-#define FA_JMP(addr, esp)  			\
+//jmp use register ebx
+#define FA_JMP_B(addr, esp)  		\
+		do{							\
+		DWORD __jmp_addr_ = addr; 	\
+		__asm __volatile__ (		\
+			"movl %0, %%ebx \n"		\
+			: "=m"(__jmp_addr_)		\
+		);							\
+		__asm __volatile__ (		\
+			"leave \n"				\
+		);							\
+		__asm __volatile__ (		\
+			"add $"#esp", %esp \n"	\
+		);							\
+		__asm __volatile__ (		\
+			"jmp *%ebx \n"			\
+		);							\
+		}while(0)
+//jmp use register edx(recomend)
+#define FA_JMP_D(addr, esp)  		\
 		do{							\
 		DWORD __jmp_addr_ = addr; 	\
 		__asm __volatile__ (		\
