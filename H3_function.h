@@ -2,6 +2,7 @@
 #define __H3_FUNCTION__H__
 
 #include "FA_def.h"
+#include "FA_struct.h"
 
 /**
  * 将16位位图从内存载入显存
@@ -59,6 +60,20 @@ struct H3_Hero* H3_GetHero(int heroid);
  */
 int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, char level);
 
+/**
+ * [获取技能名称]
+ * @param  skill [技能索引]
+ * @return       [名称地址]
+ */
+char* H3_GetSSkillName(int skill);
+
+/**
+ * [获取技能等级名]
+ * @param  level [等级[0~3]]
+ * @return       [名称地址]
+ */
+char* H3_GetSSkillLvName(int level);
+
 /*****	MEMORY	****/
 /**
  * H3内存分配
@@ -75,14 +90,19 @@ void FA_CDECL H3_Free(void* po);
 
 /**
  * [对话框创建并载入DEF文件]
- * @param  ptr     [description]
- * @param  x       [description]
- * @param  y       [description]
- * @param  dx      [description]
- * @param  itemid  [description]
- * @param  pcxname [description]
- * @param  flags   [description]
- * @return         [description]
+ * @param  addr     [description]
+ * @param  x        [x]
+ * @param  y        [y]
+ * @param  dx       [width]
+ * @param  dy       [height]
+ * @param  itemid   [identify]
+ * @param  defname  [def filename]
+ * @param  defpicid [def index]
+ * @param  p2       [description]
+ * @param  p3       [description]
+ * @param  p4       [description]
+ * @param  flags    [description]
+ * @return          [description]
  */
 BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int itemid, char* defname, int defpicid, 
@@ -117,6 +137,13 @@ BYTE* FA_THISCALL H3_DlgBuildTxtItem(BYTE* addr, int x, int y, int dx, int dy,
  * @return          [description]
  */
 BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pitem);
+
+/**
+ * [给DlgItem发送指令]
+ * @param  dlg [description]
+ * @param  cmd [description]
+ */
+FA_INLINE int FA_THISCALL H3_DlgSendCmd2Item(BYTE* dlg, struct H3_DlgItemCmd* cmd);
 
 /**
  * [初始化LOD文件]

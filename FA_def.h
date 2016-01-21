@@ -32,6 +32,7 @@
 #define FA_STDCALL 	__attribute__((stdcall))
 #define FA_CDECL	__attribute__((cdecl))
 #define FA_THISCALL	__attribute__((thiscall))
+#define FA_INLINE	inline
 #elif defined(_MSC_VER)
 #define FA_FASTCALL __fastcall
 #define FA_STDCALL	__stdcall
@@ -47,6 +48,8 @@
 
 //Hero Levelup Exp 12
 #define FA_ADDR_HERO_LVUPEXP12		0x63AC20
+#define FA_ADDR_SSKILL_NAME_BASE	0x67DCF0
+#define FA_ADDR_SSKILL_LV_NAME_BASE 0x6A75D4
 
 //GAMETYPE
 #define FA_ADDR_GAMETYPE			0x698A40
@@ -82,6 +85,7 @@
 #define FA_EDI(val)	 	__asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 	__asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
 #define FA_SET_EAX(val)	__asm__ __volatile__ ("movl %0, %%eax" : "=m"(val));
+#define FA_SET_ECX(val)	__asm__ __volatile__ ("movl %0, %%ecx" : "=m"(val));
 //jmp use register ebx
 #define FA_JMP_B(addr, esp)  		\
 		do{							\

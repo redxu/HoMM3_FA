@@ -75,7 +75,7 @@ struct H3_Player* H3_GetPlayer(int index) {
 
 /**
  * [获取英雄信息]
- * @param  heroid [Hero ID]
+ * @param  heroid [Hero ID 0~MAXHERO]
  * @return        [H3_Hero]
  */
 struct H3_Hero* H3_GetHero(int heroid) {
@@ -97,6 +97,33 @@ int FA_THISCALL H3_HeroAddSkill(struct H3_Hero* hero, int skill, char level) {
 	typedef int (FA_THISCALL *F)(struct H3_Hero*, int, char);
 	F proxy = (F)0x4e2540;
 	return proxy(hero, skill, level);
+}
+
+/**
+ * [获取技能名称]
+ * @param  skill [技能索引]
+ * @return       [名称地址]
+ */
+char* H3_GetSSkillName(int skill) {
+	char* sskillname;
+	DWORD offset = skill * 16;
+	DWORD* addr = (DWORD *)FA_ADDR_SSKILL_NAME_BASE;
+	addr = (DWORD *)(*addr + offset);
+	sskillname = (char *)(*addr);
+	return sskillname;
+}
+
+/**
+ * [获取技能等级名]
+ * @param  level [等级[0~3]]
+ * @return       [名称地址]
+ */
+char* H3_GetSSkillLvName(int level) {
+	char* sskilllvname;
+	DWORD offset = level * 4;
+	DWORD* addr = (DWORD *)(FA_ADDR_SSKILL_LV_NAME_BASE + offset);
+	sskilllvname = (char *)(*addr);
+	return sskilllvname;
 }
 
 /**
@@ -122,14 +149,19 @@ void FA_CDECL H3_Free(void* po) {
 
 /**
  * [对话框创建并载入DEF文件]
- * @param  ptr     [description]
- * @param  x       [description]
- * @param  y       [description]
- * @param  dx      [description]
- * @param  itemid  [description]
- * @param  pcxname [description]
- * @param  flags   [description]
- * @return         [description]
+ * @param  addr     [description]
+ * @param  x        [x]
+ * @param  y        [y]
+ * @param  dx       [width]
+ * @param  dy       [height]
+ * @param  itemid   [identify]
+ * @param  defname  [def filename]
+ * @param  defpicid [def index]
+ * @param  p2       [description]
+ * @param  p3       [description]
+ * @param  p4       [description]
+ * @param  flags    [description]
+ * @return          [description]
  */
 BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int itemid, char* defname, int defpicid, 
@@ -177,6 +209,17 @@ BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pit
 	typedef BYTE* (FA_THISCALL *F)(BYTE*, BYTE*, int, BYTE*);
 	F proxy = (F)0x5FE2D0;
 	return proxy(list, lastitem, count, pitem);
+}
+
+/**
+ * [给DlgItem发送指令]
+ * @param  dlg [description]
+ * @param  cmd [description]
+ */
+FA_INLINE int FA_THISCALL H3_DlgSendCmd2Item(BYTE* dlg, struct H3_DlgItemCmd* cmd) {
+	typedef int (FA_THISCALL *F)(BYTE*, struct H3_DlgItemCmd*);
+	F proxy = (F)0x5FF3A0;
+	return proxy(dlg, cmd);
 }
 
 /**
