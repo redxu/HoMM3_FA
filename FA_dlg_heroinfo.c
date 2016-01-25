@@ -112,7 +112,7 @@ static void FA_DlgHeroInfoUpdateSkill10(void) {
 	FA_EBX(_dlg_);
 	//004E2198  |> /A1 708B6900   /mov eax,dword ptr ds:[0x698B70]
 	hero = FA_GET_PV(DWORD, 0x698B70);
-	for(i=0; i<hero->skillcount; i++) {
+	for(i = 0; i < hero->skillcount; i++) {
 		//查找第i个技能
 		skillindex = -1;
 		for(j=0; j<28; j++) {
@@ -158,7 +158,7 @@ static void FA_DlgHeroInfoUpdateSkill10(void) {
 		cmd.param = 4;
 		H3_DlgSendCmd2Item((BYTE *)_dlg_, &cmd);
 	}
-	for(i=hero->skillcount; i<8; i++) {
+	for(i = hero->skillcount; i < 8; i++) {
 		cmd.type = 0x200;
 		cmd.stype = 6;
 		cmd.itemid = 0xcb + i;
@@ -176,7 +176,7 @@ static void FA_DlgHeroInfoUpdateSkill10(void) {
 		H3_DlgSendCmd2Item((BYTE *)_dlg_, &cmd);	
 	}
 	//Lock SSkill 9,10
-	if(hero->skillcount <=8 && hero->level < 25) {
+	if(hero->skillcount <= 8 && hero->level < 25) {
 		memset(&cmd, 0, sizeof(cmd));
 		cmd.type = 0x200;
 		cmd.stype = 4;
@@ -188,7 +188,7 @@ static void FA_DlgHeroInfoUpdateSkill10(void) {
 		cmd.param = "Lv25 Unlock";			
 		H3_DlgSendCmd2Item((BYTE *)_dlg_, &cmd);
 	}
-	if(hero->skillcount <=9 && hero->level < 30) {
+	if(hero->skillcount <= 9 && hero->level < 30) {
 		memset(&cmd, 0, sizeof(cmd));
 		cmd.type = 0x200;
 		cmd.stype = 4;

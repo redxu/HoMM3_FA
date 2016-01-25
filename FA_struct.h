@@ -18,7 +18,7 @@ struct H3_Hero {
 	long plotype; 			//??
 	DWORD P10Cflag;
 	DWORD plSetup;
-	WORD cursp;				//+18h left spell magic points
+	WORD mp;				//+18h left spell magic points
 	int number;
 	DWORD _unk_id;
 	BYTE player;			//0~7 ff
@@ -36,8 +36,8 @@ struct H3_Hero {
 	BYTE flags;
 	DWORD maxmovement;		//max movement (div 100 equal steps)
 	DWORD curmovement;		//left movement(div 100 equal steps)
-	DWORD exp;				//offx51
-	WORD level;
+	DWORD exp;				//+51h
+	WORD level;				//+55h
 	DWORD visited[10];
 	BYTE _un3[18];
 	int creaturetype[7];	//creature type (FFFFFFFF is empty)
@@ -117,6 +117,20 @@ struct H3_LodItemTable {
 };
 
 /**
+ * H3 Dlg Item Command struct
+ */
+struct H3_DlgItemCmd {
+	int type;
+	int stype;
+	int itemid;
+	int flags;
+	int xabs;
+	int yabs;
+	int param;
+	int flags2;
+};
+
+/**
  * Mod struct
  */
 struct FA_Mod {
@@ -134,7 +148,7 @@ struct FA_Mod {
  */
 struct FA_Mod_Q {
 	int sz;
-	struct FA_Mod mods[2048];
+	struct FA_Mod mods[10240];
 };
 
 #endif
