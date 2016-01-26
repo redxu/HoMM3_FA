@@ -127,6 +127,36 @@ char* H3_GetSSkillLvName(int level) {
 }
 
 /**
+ * [获取地图大小]
+ * @return  [地图大小]
+ */
+int H3_GetMapSize(void) {
+	int sz;
+	DWORD offset = 0x1FC44;
+	DWORD* addr = (DWORD *)FA_ADDR_BASE;
+	sz = FA_GET_PV(int, *addr + offset);
+	return sz;
+}
+
+/**
+ * [获取地图上的物品]
+ * @param  x [x 坐标]
+ * @param  y [y 坐标]
+ * @param  z [z 坐标 0地上 1地下]
+ * @return   [item]
+ */
+struct H3_MapItem* H3_GetMapItem(int x, int y, int z) {
+	struct H3_MapItem *items, *item;
+	int msz;
+	msz = H3_GetMapSize();
+	DWORD offset = 0x1FC40;
+	DWORD* addr = (DWORD *)FA_ADDR_BASE;
+	items = FA_GET_PV(struct H3_MapItem *, *addr + offset);
+	item = items + (x + (y + z * msz) * msz);
+	return item;
+}
+
+/**
  * H3内存分配
  * @param  size [大小]
  * @return      [内存地址]
@@ -145,6 +175,60 @@ void FA_CDECL H3_Free(void* po) {
 	typedef void (FA_CDECL *F)(void *);
 	F proxy = (F)0x60B0F0;
 	proxy(po);
+}
+
+static DWORD H3_Dlg_VTable[15] = {
+	 0x5D2900, // Dctor
+	 0x5FF0A0, // Activate
+	 0x5FF220, // Disactivate
+	0x405610,  
+	0x49A230,
+		0x5FF5E0,
+	0x5FFA20,
+	0x5FFB30,
+	0x5FFBB0,
+	 /*0x05D7F30,*/ 0x5D29A0, // action ???
+	0x5FFCA0,
+	0x5FFD50,
+	0x5FFE90,
+	0x4842C0,
+	0x41B0F0
+};
+
+BYTE* H3_DlgCtor(int x, int y, int dx, int dy) {
+	BYTE* _dlg_ = (BYTE *)H3_Malloc(0x68);
+	typedef BYTE* (FA_THISCALL *F)(BYTE*, int, int, int, int, int);
+	F proxy = (F)0x41AFA0;
+	proxy(_dlg_, x, y, dx, dy, 18);
+	//VTABLE
+	FA_SET_PV(DWORD, _dlg_, FA_DLG_BUYBOAT_VTABLE);
+	return _dlg_;
+}
+
+int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw) {
+	typedef int (FA_THISCALL *F)(BYTE*, int, int);
+	F proxy = (F)0x5FF0A0;
+	return proxy(_dlg_, zorder, draw);
+}
+
+/**
+ * [对话框创建并载入pcx图片]
+ * @param  addr    [description]
+ * @param  x       [x]
+ * @param  y       [y]
+ * @param  dx      [width]
+ * @param  dy      [height]
+ * @param  itemid  [identify]
+ * @param  pcxname [pcx name]
+ * @param  flags   [description]
+ * @return         [description]
+ */
+BYTE* FA_THISCALL H3_DlgBuildPcxItem(BYTE* addr, int x, int y, int dx, int dy,
+									int itemid, char* pcxname, int flags) {
+	typedef BYTE* (FA_THISCALL *F)(BYTE*, int, int, int, int,
+									int, char*, int);
+	F proxy = (F)0x44FFA0;
+	return proxy(addr, x, y, dx, dy, itemid, pcxname, flags);
 }
 
 /**

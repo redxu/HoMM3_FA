@@ -95,6 +95,30 @@ struct H3_Player {
 };
 
 /**
+ * H3 Map Item struct 0x26
+ */
+struct H3_MapItem {
+	DWORD setup;
+	BYTE land;
+	BYTE ltype;
+	BYTE river;
+	BYTE rtype;
+	BYTE road;
+	BYTE rdtype;
+	WORD _u1;
+	BYTE mirror;
+	BYTE attrib;
+	WORD bits;
+	WORD _u2;
+	DWORD* draw;
+	DWORD* drawend;
+	DWORD* drawend2;
+	int type;
+	WORD stype;
+	WORD drawnum;
+};
+
+/**
  * H3 core struct 0x4e7cc
  */
 struct H3_Core {
@@ -114,6 +138,17 @@ struct H3_Core {
 struct H3_LodItemTable {
 	DWORD count;
 	DWORD* itemlist;
+};
+
+/**
+ * H3 Dlg struct/class
+ */
+struct H3_Dlg {
+	DWORD* VTABLE;
+	BYTE unknow[0x2c];
+	DWORD* itemlist;
+	BYTE unknow2[52];
+	BYTE* lv[0];
 };
 
 /**

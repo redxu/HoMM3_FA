@@ -74,6 +74,21 @@ char* H3_GetSSkillName(int skill);
  */
 char* H3_GetSSkillLvName(int level);
 
+/**
+ * [获取地图大小]
+ * @return  [地图大小]
+ */
+int H3_GetMapSize(void);
+
+/**
+ * [获取地图上的物品]
+ * @param  x [x 坐标]
+ * @param  y [y 坐标]
+ * @param  z [z 坐标 0地上 1地下]
+ * @return   [item]
+ */
+struct H3_MapItem* H3_GetMapItem(int x, int y, int z);
+
 /*****	MEMORY	****/
 /**
  * H3内存分配
@@ -87,6 +102,25 @@ void* FA_CDECL H3_Malloc(int size);
  * @param  po [内存地址]
  */
 void FA_CDECL H3_Free(void* po);
+
+BYTE* H3_DlgCtor(int x, int y, int dx, int dy);
+
+int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw);
+
+/**
+ * [对话框创建并载入pcx图片]
+ * @param  addr    [description]
+ * @param  x       [x]
+ * @param  y       [y]
+ * @param  dx      [width]
+ * @param  dy      [height]
+ * @param  itemid  [identify]
+ * @param  pcxname [pcx name]
+ * @param  flags   [description]
+ * @return         [description]
+ */
+BYTE* FA_THISCALL H3_DlgBuildPcxItem(BYTE* addr, int x, int y, int dx, int dy,
+									int itemid, char* pcxname, int flags);
 
 /**
  * [对话框创建并载入DEF文件]
