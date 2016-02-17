@@ -23,5 +23,13 @@ BOOL FA_Mod_Init(void);
  */
 void FA_Mod_Register(struct FA_Mod* mod, int sz);
 
+/**
+ * [获取函数代理地址]
+ * [注意注册的函数不能重复]
+ * @param  detour [新地址]
+ * @return        [代理地址]
+ */
+DWORD FA_Detour_GetProxy(DWORD detour);
+
 
 #endif

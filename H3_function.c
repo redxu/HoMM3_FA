@@ -6,14 +6,15 @@
 /**
  * 将16位位图从内存载入显存
  * @param  pcx [位图名称,如loadbar.pcx]
- * pcx used ecx
  * @return	   [内存地址??]
  */
+/*
 int FA_FASTCALL H3_BlitPcx16(const char* pcx) {
 	typedef int (FA_FASTCALL *F)(const char *);
 	F proxy = (F)0x55b1e0;
 	return proxy(pcx);
 }
+*/
 
 /**
  * 随机函数
@@ -21,11 +22,13 @@ int FA_FASTCALL H3_BlitPcx16(const char* pcx) {
  * @param  max [最大可选值]
  * @return     [随机值]
  */
+/*
 int FA_FASTCALL H3_Random(int min, int max) {
 	typedef int (FA_FASTCALL *F)(int, int);
 	F proxy = (F)0x50C7C0;
 	return proxy(min,max);
 }
+*/
 
 /**
  * 信息提示框
@@ -161,33 +164,37 @@ struct H3_MapItem* H3_GetMapItem(int x, int y, int z) {
  * @param  size [大小]
  * @return      [内存地址]
  */
+/*
 void* FA_CDECL H3_Malloc(int size) {
 	typedef void* (FA_CDECL *F)(int);
 	F proxy = (F)0x617492;
 	return proxy(size);
 }
+*/
 
 /**
  * H3内存释放
  * @param  po [内存地址]
  */
+/*
 void FA_CDECL H3_Free(void* po) {
 	typedef void (FA_CDECL *F)(void *);
 	F proxy = (F)0x60B0F0;
 	proxy(po);
 }
+*/
 
 static DWORD H3_Dlg_VTable[15] = {
-	 0x5D2900, // Dctor
-	 0x5FF0A0, // Activate
-	 0x5FF220, // Disactivate
+	0x5D2900, // Dctor
+	0x5FF0A0, // Activate
+	0x5FF220, // Disactivate
 	0x405610,  
 	0x49A230,
-		0x5FF5E0,
+	0x5FF5E0,
 	0x5FFA20,
 	0x5FFB30,
 	0x5FFBB0,
-	 /*0x05D7F30,*/ 0x5D29A0, // action ???
+	/*0x05D7F30,*/ 0x41B120, // action ???
 	0x5FFCA0,
 	0x5FFD50,
 	0x5FFE90,
@@ -195,14 +202,41 @@ static DWORD H3_Dlg_VTable[15] = {
 	0x41B0F0
 };
 
-BYTE* H3_DlgCtor(int x, int y, int dx, int dy) {
+int FA_THISCALL H3_DlgEventLoop(BYTE* _dlg_, struct H3_DlgItemCmd* cmd) {
+	typedef int (FA_THISCALL *F)(BYTE*, struct H3_DlgItemCmd* );
+	F proxy = (F)0x41B120;	//Dlg_EventLoop
+	return proxy(_dlg_, cmd);
+}
+
+BYTE* H3_DlgCtor(int x, int y, int dx, int dy, int itemcount) {
+	//Malloc and Call Ctor
 	BYTE* _dlg_ = (BYTE *)H3_Malloc(0x68);
 	typedef BYTE* (FA_THISCALL *F)(BYTE*, int, int, int, int, int);
 	F proxy = (F)0x41AFA0;
 	proxy(_dlg_, x, y, dx, dy, 18);
-	//VTABLE
-	FA_SET_PV(DWORD, _dlg_, FA_DLG_BUYBOAT_VTABLE);
+	//Set VTABLE
+	FA_SET_PV(BYTE, _dlg_ + 0x60, 0);
+	FA_SET_PV(DWORD, _dlg_, FA_DLG_SYSOPTIONS_VTABLE);
+	//Set ItemList
+	BYTE* _items_ = (BYTE *)H3_Malloc(itemcount);
+	FA_SET_PV(DWORD, _dlg_ + 0x34, _items_);
+	FA_SET_PV(DWORD, _dlg_ + 0x38, _items_);
+	FA_SET_PV(DWORD, _dlg_ + 0x3c, &_items_[itemcount]);
+	//what's 0x64?
+	FA_SET_PV(DWORD, _dlg_ + 0x64, 1);
 	return _dlg_;
+}
+
+int FA_THISCALL H3_DlgExec(BYTE* _dlg_, int unknow) {
+	typedef int (FA_THISCALL *F)(BYTE*, int);
+	F proxy = (F)0x5ffa20;
+	return proxy(_dlg_, unknow);
+}
+
+int FA_THISCALL H3_DlgActive(BYTE* _dlg_, char active) {
+	typedef int (FA_THISCALL *F)(BYTE*, int);
+	F proxy = (F)0x5ffbb0;
+	return proxy(_dlg_, active);
 }
 
 int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw) {

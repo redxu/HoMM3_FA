@@ -44,6 +44,10 @@
 		<Compiler>
 			<Add option="libs/liblua.a" />
 		</Compiler>
+		<Unit filename="FA_artifact.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_artifact.h" />
 		<Unit filename="FA_debug.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -53,6 +57,9 @@
 		</Unit>
 		<Unit filename="FA_detour.h" />
 		<Unit filename="FA_dlg_heroinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_eyeofmagi.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_heroskill.c">
@@ -75,6 +82,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_mod.h" />
+		<Unit filename="FA_sskill.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="FA_struct.h" />
 		<Unit filename="H3_function.c">
 			<Option compilerVar="CC" />

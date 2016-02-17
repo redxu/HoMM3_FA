@@ -7,10 +7,10 @@
 /**
  * 将16位位图从内存载入显存
  * @param  pcx [位图名称,如loadbar.pcx]
- * pcx used ecx
  * @return	   [内存地址??]
  */
-int FA_FASTCALL H3_BlitPcx16(const char* pcx);
+//int FA_FASTCALL H3_BlitPcx16(const char* pcx);
+#define H3_BlitPcx16(pcx) (((int (FA_FASTCALL *)(const char *))0x55b1e0)(pcx))
 
 /**
  * 随机函数
@@ -18,7 +18,8 @@ int FA_FASTCALL H3_BlitPcx16(const char* pcx);
  * @param  max [最大可选值]
  * @return     [随机值]
  */
-int FA_FASTCALL H3_Random(int min, int max);
+//int FA_FASTCALL H3_Random(int min, int max);
+#define H3_Random(min, max) (((int (FA_FASTCALL *)(int, int))0x50C7C0)(min, max))
 
 /**
  * 信息提示框
@@ -95,15 +96,21 @@ struct H3_MapItem* H3_GetMapItem(int x, int y, int z);
  * @param  size [大小]
  * @return      [内存地址]
  */
-void* FA_CDECL H3_Malloc(int size);
+//void* FA_CDECL H3_Malloc(int size);
+#define H3_Malloc(size) (((void* (FA_CDECL *)(int))0x617492)(size))
 
 /**
  * H3内存释放
  * @param  po [内存地址]
  */
-void FA_CDECL H3_Free(void* po);
+//void FA_CDECL H3_Free(void* po);
+#define H3_Free(po) (((void (FA_CDECL *)(void *))0x60B0F0)(po))
 
-BYTE* H3_DlgCtor(int x, int y, int dx, int dy);
+BYTE* H3_DlgCtor(int x, int y, int dx, int dy, int itemcount);
+
+int FA_THISCALL H3_DlgExec(BYTE* _dlg_, int unknow);
+
+int FA_THISCALL H3_DlgActive(BYTE* _dlg_, char increase);
 
 int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw);
 

@@ -46,7 +46,7 @@
 //基址
 #define FA_ADDR_BASE        		0x699538
 
-//Hero Levelup Exp 12
+//Hero Levelup Exp After 12
 #define FA_ADDR_HERO_LVUPEXP12		0x63AC20
 #define FA_ADDR_SSKILL_NAME_BASE	0x67DCF0
 #define FA_ADDR_SSKILL_LV_NAME_BASE 0x6A75D4
@@ -65,9 +65,20 @@
 #define FA_SSKILL_ARMORER_TABLE		0x63EA08
 #define FA_SSKILL_RESISTANCE_TABLE	0x63EA48
 
+//DLG
+#define FA_DLG_BUYBOAT_VTABLE		0x643918
+#define FA_DLG_HEROINFO_VTABLE		0x63eAE8
+#define FA_DLG_SYSOPTIONS_VTABLE	0x642478
+
 //LOD 最大LOD数量
 #define FA_MAX_LOD					8
 
+//Artifact 最大宝物数量
+#define H3_MAX_ARTIFACT				0x90
+#define FA_MAX_ARTIFACT				255
+//ComboArtifact 最大组合宝物数量
+#define H3_MAX_COMBOARTIFACT		12
+#define FA_MAX_COMBOARTIFACT		48
 
 
 

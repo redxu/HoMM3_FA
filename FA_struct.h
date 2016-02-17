@@ -141,7 +141,33 @@ struct H3_LodItemTable {
 };
 
 /**
+ * H3 Artifact
+ */
+struct H3_Artifact {
+	char *name;        	// +00h
+	DWORD cost;         // +04h
+	int position;    	// +08h		//1头部 2披肩 3脖子
+	int type;        	// +0Ch		//0x10 0x00 ???
+	char *description;  // +10h
+	int comboindex;   	// +14h		//>=0组合宝物序号 -1非组合宝物
+	int combopartindex;	// +18h		//>=组合部件 -1非组合部件
+	BYTE Disable;     	// +1Ch		//0->FALSE
+	BYTE newspell;    	// +1Dh		//0->FALSE 1->(泰坦之剑)
+	BYTE _u1;           // +1Eh
+	BYTE _u2;           // +1Fh
+};
+
+/**
+ * H3 Combo Artifact 0x18
+ */
+struct H3_ComboArtifact {
+	int id;
+	DWORD flags[5];
+};
+
+/**
  * H3 Dlg struct/class
+ * 0x60 -> 0
  */
 struct H3_Dlg {
 	DWORD* VTABLE;

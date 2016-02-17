@@ -34,6 +34,21 @@ static void* FA_FASTCALL FA_DoGlobalEvents(void* ecx) {
 		FA_Log("loading FA_DoGlobalEvents.lua Failed! [%s]", lua_tostring(L, -1));
 	}
 
+	//
+	/*
+	int msz = H3_GetMapSize();
+	int i,j;
+	for(i = 0; i < msz; i++)
+	for(j = 0; j < msz; j++)
+	{
+	struct H3_MapItem* item = H3_GetMapItem(i, j, 0);
+	//if(item->otype != 5)
+	//	continue;
+	//FA_DumpTxt(item, sizeof(*item));
+	FA_Log("item(%d,%d,%p) river=%d, type=%d",i,j,item, item->river, item->type);
+	}
+	*/
+
 	return rtv;
 }
 
