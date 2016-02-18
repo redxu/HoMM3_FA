@@ -110,6 +110,8 @@ BYTE* H3_DlgCtor(int x, int y, int dx, int dy, int itemcount);
 
 int FA_THISCALL H3_DlgExec(BYTE* _dlg_, int unknow);
 
+int FA_THISCALL H3_DlgInitItem(BYTE* _dlg_, BYTE* _item, int zorder);
+
 int FA_THISCALL H3_DlgActive(BYTE* _dlg_, char increase);
 
 int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw);
@@ -131,7 +133,7 @@ BYTE* FA_THISCALL H3_DlgBuildPcxItem(BYTE* addr, int x, int y, int dx, int dy,
 
 /**
  * [对话框创建并载入DEF文件]
- * @param  addr     [description]
+ * @param  addr     [dlgitem 0x48]
  * @param  x        [x]
  * @param  y        [y]
  * @param  dx       [width]
@@ -142,12 +144,36 @@ BYTE* FA_THISCALL H3_DlgBuildPcxItem(BYTE* addr, int x, int y, int dx, int dy,
  * @param  p2       [description]
  * @param  p3       [description]
  * @param  p4       [description]
- * @param  flags    [description]
+ * @param  flags    [0x10]
  * @return          [description]
  */
 BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int itemid, char* defname, int defpicid, 
 								int p2, int p3, int p4, int flags);
+
+/**
+ * [对话框创建并载入DEF文件(原始按钮,如OK,CANCEL)]
+ * @param  addr       [dlgitem 0x68]
+ * @param  x          [x]
+ * @param  y          [y]
+ * @param  dx         [width]
+ * @param  dy         [height]
+ * @param  itemid     [identify]
+ * @param  defname    [def filename]
+ * @param  defid      [def index]
+ * @param  pressdefid [def press index]
+ * @param  closedlg   [0 keep 1 close]
+ * @param  hotkey     [hotkey]
+ * @param  flags      [flags 0x2]
+ * @return            [dlgitem]
+ */
+#define H3_DlgBuildDefItem2(addr, x, y, dx, dy, 					\
+							itemid, defname, defid, pressdefid, 	\
+							closedlg, hotkey, flags) 				\
+		(((BYTE* (FA_THISCALL *)(BYTE*, int, int, int, int, 		\
+								int, char*, int, int, 				\
+								int, int, int))0x455bd0) 			\
+		(addr, x, y, dx, dy, itemid, defname, defid, pressdefid, closedlg, hotkey, flags));
 
 /**
  * [对话框创建并载入TXT]

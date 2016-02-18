@@ -216,15 +216,21 @@ BYTE* H3_DlgCtor(int x, int y, int dx, int dy, int itemcount) {
 	proxy(_dlg_, x, y, dx, dy, 18);
 	//Set VTABLE
 	FA_SET_PV(BYTE, _dlg_ + 0x60, 0);
-	FA_SET_PV(DWORD, _dlg_, FA_DLG_SYSOPTIONS_VTABLE);
+	FA_SET_PV(DWORD, _dlg_, H3_Dlg_VTable);
 	//Set ItemList
 	BYTE* _items_ = (BYTE *)H3_Malloc(itemcount);
 	FA_SET_PV(DWORD, _dlg_ + 0x34, _items_);
 	FA_SET_PV(DWORD, _dlg_ + 0x38, _items_);
 	FA_SET_PV(DWORD, _dlg_ + 0x3c, &_items_[itemcount]);
 	//what's 0x64?
-	FA_SET_PV(DWORD, _dlg_ + 0x64, 1);
+	FA_SET_PV(DWORD, _dlg_ + 0x64, FA_GET_PV(DWORD, _items_ - 4));
 	return _dlg_;
+}
+
+int FA_THISCALL H3_DlgInitItem(BYTE* _dlg_, BYTE* _item, int zorder) {
+	typedef int (FA_THISCALL *F)(BYTE*, BYTE*, int);
+	F proxy = (F)0x5ff270;
+	return proxy(_dlg_, _item, zorder);
 }
 
 int FA_THISCALL H3_DlgExec(BYTE* _dlg_, int unknow) {

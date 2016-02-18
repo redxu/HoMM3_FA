@@ -147,7 +147,7 @@ struct H3_Artifact {
 	char *name;        	// +00h
 	DWORD cost;         // +04h
 	int position;    	// +08h		//1头部 2披肩 3脖子
-	int type;        	// +0Ch		//0x10 0x00 ???
+	int type;        	// +0Ch		//0x02 04 08 10 ???
 	char *description;  // +10h
 	int comboindex;   	// +14h		//>=0组合宝物序号 -1非组合宝物
 	int combopartindex;	// +18h		//>=组合部件 -1非组合部件
@@ -166,14 +166,30 @@ struct H3_ComboArtifact {
 };
 
 /**
- * H3 Dlg struct/class
- * 0x60 -> 0
+ * H3 Dlg struct/class 0x68
  */
 struct H3_Dlg {
 	DWORD* VTABLE;
-	BYTE unknow[0x2c];
-	DWORD* itemlist;
-	BYTE unknow2[52];
+	BYTE _u1[12];
+	DWORD count;			//+10h 固定为0x12
+	DWORD _u2;
+	int x;
+	int y;
+	int width;
+	int height;
+	struct {
+		DWORD* first;
+		DWORD* last;
+	} initeditemlist;
+	struct {
+		DWORD* unknow;		//+30h 
+		DWORD* first;		//+34h start of items mem
+		DWORD* last;		//+38h
+		DWORD* end;			//+3ch end of items mem
+	} itemlist;
+	BYTE _u3[32];
+	DWORD ukflag;			//+60h	should be 0 ?
+	DWORD ukflag2;			//+64h
 	BYTE* lv[0];
 };
 

@@ -13,6 +13,7 @@ static int _FA_ComboArtifactCount = H3_MAX_COMBOARTIFACT;
 //FA New Artifact Table (Redirect and new)
 static struct H3_Artifact __FA_ArtifactTable[FA_MAX_ARTIFACT];
 //FA New Artifact Effect Table (Redirect and new)
+//0x63E758
 static char FA_ArtifactEffect[FA_MAX_ARTIFACT][4];
 //FA New Artifact Pickup Msg (Redirect and new)
 static char* FA_ArtifactPickupMsg[FA_MAX_ARTIFACT];
