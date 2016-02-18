@@ -191,6 +191,23 @@ static void FA_HeroLearnSkillFromUniversityClick(void) {
 }
 
 /**
+ * [AI Hero Lv up Learn New Skill Check]
+ */
+static void FA_AIHeroLvUpLearnNewSkill(void) {
+	//esi -->hero
+	struct H3_Hero* hero;
+	int rtv;
+
+	FA_ESI(hero);
+	rtv = FA_HeroLearnNewSkillCheck(hero);
+	//restore esi
+	FA_SET_ESI(hero);
+	if(rtv == 0) {
+		FA_JMP_D(0x525179, 4);
+	}
+}
+
+/**
  * [Hero ADPK Limit In HeroInfoDlg]
  */
 static BYTE FA_Hero_PSkill_Limit1[] = {
@@ -226,6 +243,8 @@ static struct FA_Mod __mods[] = {
 	{FA_MOD_TYPE_CALL, 0x005F0F4A, (DWORD)FA_HeroLearnSkillFromUniversityClick, 9},
 	//Learn Skill From Seer Patch to 10 ... 先知小屋送技能
 	{FA_MOD_TYPE_BYTE, 0x0057417F, 0x0a, 1},
+	//AI Hero Lv up Learn New Skill Check
+	{FA_MOD_TYPE_CALL, 0x00524b94, (DWORD)FA_AIHeroLvUpLearnNewSkill, 13},
 	//Hero ADPK(PSKILL) Patch to 255
 	//{FA_MOD_TYPE_WRITE, 0x004e197f, (DWORD)FA_Hero_PSkill_Limit1, sizeof(FA_Hero_PSkill_Limit1)},
 	//{FA_MOD_TYPE_WRITE, 0x004519b6, (DWORD)FA_Hero_PSkill_Limit2, sizeof(FA_Hero_PSkill_Limit2)},
