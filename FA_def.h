@@ -96,7 +96,9 @@
 #define FA_EDI(val)	 	__asm__ __volatile__ ("movl %%edi, %0" : "=m"(val));
 #define FA_ESI(val)	 	__asm__ __volatile__ ("movl %%esi, %0" : "=m"(val));
 #define FA_SET_EAX(val)	__asm__ __volatile__ ("movl %0, %%eax" : "=m"(val));
+#define FA_SET_EBX(val)	__asm__ __volatile__ ("movl %0, %%ebx" : "=m"(val));
 #define FA_SET_ECX(val)	__asm__ __volatile__ ("movl %0, %%ecx" : "=m"(val));
+#define FA_SET_ESI(val)	__asm__ __volatile__ ("movl %0, %%esi" : "=m"(val));
 //jmp use register ebx
 #define FA_JMP_B(addr, esp)  		\
 		do{							\

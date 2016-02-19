@@ -31,6 +31,8 @@ extern void FA_SSkill_Init(void);
 extern void FA_EyeOfMagi_Init(void);
 //extern from FA_Artifact
 extern void FA_Artifact_Init(void);
+//extern from FA_HeroExp
+extern void FA_HeroExp_Init(void);
 
 /**
  * 修改HoMM3的流程
@@ -48,6 +50,7 @@ BOOL FA_Mod_Init(void) {
 	FA_SSkill_Init();
 	FA_EyeOfMagi_Init();
 	FA_Artifact_Init();
+	FA_HeroExp_Init();
 
 	for(i=0; i<__mq.sz; i++) {
 		struct FA_Mod* mod = &__mq.mods[i];
