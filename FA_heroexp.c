@@ -9,9 +9,9 @@
 #include "FA_mod.h"
 
 /**
- * 英雄12级以后升级的经验系数(1.2->1.1)
+ * 英雄12级以后升级的经验系数(1.2->1.15)
  */
-static double FA_HeroLv12ExpRatio = 1.1;
+static double FA_HeroLv12ExpRatio = 1.12;
 
 
 //00469FBF  |.  81C3 F4010000 add ebx,0x1F4
@@ -23,19 +23,27 @@ static void FA_KillHeroExp(void) {
 	//ebx->Monster Exp ecx->Defeated Hero eax->combatMgr
 	DWORD mexp, hexp;
 	DWORD combatmgr;
+	//逃跑,投降标志 (逃跑投降无经验)
+	//1 逃跑           1 投降
+	BYTE retreat, surrender;
 	struct H3_Hero* hero;
 	FA_EBX(mexp);
 	FA_ECX(hero);
 	FA_EAX(combatmgr);
+	retreat = FA_GET_PV(BYTE, 0x6985f3);
+	surrender = FA_GET_PV(BYTE, 0x697794);
 
 	//等级小于5,固定300Exp,每增长5级,经验递增250
-	if(hero->level <= 5) {
-		hexp = 300;
+	if(retreat != 1 && surrender != 1) {
+		if(hero->level <= 5) {
+			hexp = 300;
+		}
+		else {
+			hexp = 500 + ((hero->level - 6) / 5) * 250;
+		}
+
+		mexp += hexp;
 	}
-	else {
-		hexp = 500 + ((hero->level - 6) / 5) * 250;
-	}
-	mexp += hexp;
 	FA_SET_EBX(mexp);
 	//restore eax
 	FA_SET_EAX(combatmgr);
@@ -48,7 +56,7 @@ static struct FA_Mod __mods[] = {
 	//Mod Hero Lv12 ExpRatio
 	{FA_MOD_TYPE_WRITE, FA_ADDR_HERO_LVUPEXP12, (DWORD)&FA_HeroLv12ExpRatio, 8},
 	//Mod Battle Kill Hero Exp
-	{FA_MOD_TYPE_CALL, 0x00469FBF, (DWORD)FA_KillHeroExp, 6},
+	{FA_MOD_TYPE_CALL, 0x00469FBF, (DWORD)FA_KillHeroExp, 0x23},
 };
 
 /**
