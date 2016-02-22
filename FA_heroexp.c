@@ -9,7 +9,7 @@
 #include "FA_mod.h"
 
 /**
- * 英雄12级以后升级的经验系数(1.2->1.15)
+ * 英雄12级以后升级的经验系数(1.2->1.12)
  */
 static double FA_HeroLv12ExpRatio = 1.12;
 
@@ -33,7 +33,7 @@ static void FA_KillHeroExp(void) {
 	retreat = FA_GET_PV(BYTE, 0x6985f3);
 	surrender = FA_GET_PV(BYTE, 0x697794);
 
-	//等级小于5,固定300Exp,每增长5级,经验递增250
+	//level <= 5 exp = 300 level <= 10 exp = 500 exp = 500 + 250*n
 	if(retreat != 1 && surrender != 1) {
 		if(hero->level <= 5) {
 			hexp = 300;

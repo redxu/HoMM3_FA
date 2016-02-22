@@ -46,6 +46,9 @@
 //基址
 #define FA_ADDR_BASE        		0x699538
 
+//Mouse Manager
+#define FA_ADDR_MOUSEMGR			0x6992B0
+
 //Hero Levelup Exp After 12
 #define FA_ADDR_HERO_LVUPEXP12		0x63AC20
 #define FA_ADDR_SSKILL_NAME_BASE	0x67DCF0
@@ -53,6 +56,7 @@
 
 //GAMETYPE
 #define FA_ADDR_GAMETYPE			0x698A40
+#define FA_ADDR_GAMELEVEL			0x6834A4		//[0-4] 80~200%
 #define FA_GAMETYPE_SINGLE			0
 #define FA_GAMETYPE_HOTSEAT			3
 //MessageBox

@@ -17,7 +17,7 @@
  */
 static void FA_DlgHeroInfoDrawSkill10(void) {
 	BYTE* item;
-	DWORD callee_ebp, caller_ebp, caller_esi;
+	DWORD caller_esi;
 	int i;
 	int x, y, id;
 
@@ -38,13 +38,13 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 
 		//black magic code
 		//Get Caller local vars.
-		FA_EBP(callee_ebp);
+		//FA_EBP(callee_ebp);
 		FA_ESI(caller_esi);		//caller esi eq callee esi.
-		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//caller_ebp = FA_GET_PV(DWORD, callee_ebp);
 		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
 		//8945 E0       mov [ebp-0x20],eax			//eax == item;
-		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
-		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+		//FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, &item);
 
 		//hint1
 		item = (BYTE *)H3_Malloc(0x50);
@@ -61,13 +61,13 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 
 		//black magic code
 		//Get Caller local vars.
-		FA_EBP(callee_ebp);
+		//FA_EBP(callee_ebp);
 		FA_ESI(caller_esi);		//caller esi eq callee esi.
-		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//caller_ebp = FA_GET_PV(DWORD, callee_ebp);
 		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
 		//8945 E0       mov [ebp-0x20],eax			//eax == item;
-		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
-		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+		//FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, &item);
 
 		//hint2
 		item = (BYTE *)H3_Malloc(0x50);
@@ -83,13 +83,13 @@ static void FA_DlgHeroInfoDrawSkill10(void) {
 
 		//black magic code
 		//Get Caller local vars.
-		FA_EBP(callee_ebp);
+		//FA_EBP(callee_ebp);
 		FA_ESI(caller_esi);		//caller esi eq callee esi.
-		caller_ebp = FA_GET_PV(DWORD, callee_ebp);
+		//caller_ebp = FA_GET_PV(DWORD, callee_ebp);
 		//885D FC       mov byte ptr ss:[ebp-0x4],bl  //what's bl? looks like always 0?
 		//8945 E0       mov [ebp-0x20],eax			//eax == item;
-		FA_SET_PV(DWORD, caller_ebp - 0x20, item);
-		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, (BYTE *)(caller_ebp - 0x20));
+		//FA_SET_PV(DWORD, caller_ebp - 0x20, item);
+		H3_DlgAddItem((BYTE *)caller_esi, (BYTE *)(FA_GET_PV(DWORD, (caller_esi + 8))), 1, &item);
 	}
 
 	FA_JMP_D(0x004DFF65, 4);

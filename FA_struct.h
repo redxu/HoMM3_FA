@@ -166,10 +166,46 @@ struct H3_ComboArtifact {
 };
 
 /**
+ * H3 Dlg Item Command struct
+ */
+struct H3_DlgItemCmd {
+	int type;				// 0x200:mouse push/pop 
+	int stype;
+	int itemid;
+	int flags;
+	int xabs;
+	int yabs;
+	int param;
+	int flags2;
+};
+
+struct H3_Dlg;
+/**
+ * H3 Dlg class Virtual Table
+ */
+struct H3_Dlg_VTable {
+	DWORD dctor;
+	DWORD show;
+	DWORD hide;
+	DWORD vmt3;				//???
+	DWORD nullstub;
+	DWORD redraw;
+	void (FA_THISCALL *exec)(struct H3_Dlg*, int shown);
+	DWORD init;
+	DWORD active;
+	DWORD (FA_THISCALL *dlgproc)(struct H3_Dlg*, struct H3_DlgItemCmd*);
+	DWORD mousemove;
+	DWORD mouserclick;
+	DWORD clickret;
+	DWORD vmt3_ret3;
+	DWORD unknow;
+};
+
+/**
  * H3 Dlg struct/class 0x68
  */
 struct H3_Dlg {
-	DWORD* VTABLE;
+	struct H3_Dlg_VTable* vtable;
 	BYTE _u1[12];
 	DWORD count;			//+10h 固定为0x12
 	DWORD _u2;
@@ -191,20 +227,6 @@ struct H3_Dlg {
 	DWORD ukflag;			//+60h	should be 0 ?
 	DWORD ukflag2;			//+64h
 	BYTE* lv[0];
-};
-
-/**
- * H3 Dlg Item Command struct
- */
-struct H3_DlgItemCmd {
-	int type;
-	int stype;
-	int itemid;
-	int flags;
-	int xabs;
-	int yabs;
-	int param;
-	int flags2;
 };
 
 /**

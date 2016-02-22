@@ -106,15 +106,48 @@ struct H3_MapItem* H3_GetMapItem(int x, int y, int z);
 //void FA_CDECL H3_Free(void* po);
 #define H3_Free(po) (((void (FA_CDECL *)(void *))0x60B0F0)(po))
 
-BYTE* H3_DlgCtor(int x, int y, int dx, int dy, int itemcount);
+/**
+ * [H3对话框初始化]
+ * @param  dlg   [dlg指针]
+ * @param  x     [x坐标]
+ * @param  y     [y坐标]
+ * @param  dx    [宽]
+ * @param  dy    [高]
+ * @param  count [0x12]
+ * @return       [dlg]
+ */
+#define H3_DlgCtor(dlg, x, y, dx, dy, count) 							\
+ 		(((struct H3_Dlg* (FA_THISCALL *)(struct H3_Dlg*, int, int, 	\
+ 		int, int, int))0x41AFA0)(dlg, x, y, dx, dy, count));
 
-int FA_THISCALL H3_DlgExec(BYTE* _dlg_, int unknow);
+/**
+ * [H3对话框执行]
+ * @param  dlg   [dlg指针]
+ * @param  shown [一般为0]
+ */
+#define H3_DlgExec(dlg, shown) 											\
+ 		(((void (FA_THISCALL *)(struct H3_Dlg*, int))0x5ffa20)(dlg, shown));
 
-int FA_THISCALL H3_DlgInitItem(BYTE* _dlg_, BYTE* _item, int zorder);
+/**
+ * [H3对话框窗口过程]
+ * @param  dlg [dlg指针]
+ * @param  cmd [cmd指令]
+ * @return     [0/1]
+ */
+#define H3_DlgProc(dlg, cmd) 											\
+ 		(((DWORD (FA_THISCALL *)(struct H3_Dlg*, struct H3_DlgItemCmd*))\
+ 		0x41B120)(dlg, cmd));
 
-int FA_THISCALL H3_DlgActive(BYTE* _dlg_, char increase);
-
-int FA_THISCALL H3_DlgShow(BYTE* _dlg_, int zorder, int draw);
+/**
+ * [H3对话框item初始化]
+ * @param  dlg    [dlg指针]
+ * @param  item   [item指针]
+ * @param  zorder [z顺序]
+ * @return        []
+ */
+#define H3_DlgInitItem(dlg, item, zorder) 								\
+ 		(((int (FA_THISCALL *)(struct H3_Dlg*, BYTE*, int))				\
+ 		0x5ff270)(dlg, item, zorder));
 
 /**
  * [对话框创建并载入pcx图片]
@@ -152,7 +185,7 @@ BYTE* FA_THISCALL H3_DlgBuildDefItem(BYTE* addr, int x, int y, int dx, int dy,
 								int p2, int p3, int p4, int flags);
 
 /**
- * [对话框创建并载入DEF文件(原始按钮,如OK,CANCEL)]
+ * [对话框创建并载入DEF文件(原始按钮,如OK,CANCEL)动态?]
  * @param  addr       [dlgitem 0x68]
  * @param  x          [x]
  * @param  y          [y]
@@ -210,7 +243,15 @@ BYTE* FA_THISCALL H3_DlgAddItem(BYTE* list, BYTE* lastitem, int count, BYTE* pit
  * @param  dlg [description]
  * @param  cmd [description]
  */
-FA_INLINE int FA_THISCALL H3_DlgSendCmd2Item(BYTE* dlg, struct H3_DlgItemCmd* cmd);
+int FA_THISCALL H3_DlgSendCmd2Item(BYTE* dlg, struct H3_DlgItemCmd* cmd);
+
+/**
+ * [检测英雄是否拥有宝物]
+ * @param  hero [英雄]
+ * @param  artid [宝物id]
+ * @return
+ */
+#define H3_HeroHasArtCheck(hero, artid) (((int (FA_THISCALL *)(struct H3_Hero*, int))0x4d9460)(hero, artid));
 
 /**
  * [初始化LOD文件]
@@ -222,5 +263,8 @@ int FA_FASTCALL H3_LOD_Init(BYTE* lod, char* lodname);
 
 int FA_THISCALL H3_LOD_LoadHeader(BYTE* this, const char* fullpath, BYTE readonly);
 
+#define H3_EnableMouse(mouse, enable) (((int (FA_THISCALL *)(BYTE*, BYTE))0x50D7B0)(mouse, enable));
+
+#define H3_SetMouseCursor(mouse, uk, type) (((int (FA_THISCALL *)(BYTE*, int, int))0x50CEA0)(mouse, uk, type));
 
 #endif
