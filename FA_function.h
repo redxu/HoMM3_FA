@@ -22,5 +22,4 @@ int FA_HeroLearnSkillCheck(struct H3_Hero* hero, int skill);
  */
 int FA_HeroLearnNewSkillCheck(struct H3_Hero* hero);
 
-
 #endif

@@ -56,10 +56,17 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_detour.h" />
+		<Unit filename="FA_dlg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_dlg.h" />
 		<Unit filename="FA_dlg_heroinfo.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_eyeofmagi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FA_heroexp.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FA_heroskill.c">
